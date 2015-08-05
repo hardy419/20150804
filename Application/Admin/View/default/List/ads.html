@@ -1,0 +1,174 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">主頁</a> <span class="divider">/</span></li>
+				    <li><a href="#">主頁管理</a> <span class="divider">/</span></li>
+				    <li class="active">主頁廣告</li>
+				    </ul>
+				<h3>主頁廣告</h3>	
+                <form class="form-horizontal" id="myForm-1" method="post" action="{:U('save')}" onsubmit="editor.sync();myForm.submit();" enctype="multipart/form-data">
+                  <div class="frame-box-div">
+				    <div class="control-group">
+				    <!--label class="control-label">Link：</label-->
+				    <div class="controls">
+				    <input type="hidden" id="image-url-1" name="image" value="{$ads_1[0]['image']}" >
+				    <span id="fileinput-image-1" class="fileinput-image"><img id="uploaded-img-1" class="uploaded-img main-banner-img" src="" /></span>
+				    </div>
+				    </div>
+				    <div class=" control-group">
+		                   <label class="control-label">廣告1：</label>
+		                   <div class="controls fileinput-button">
+		                     <span class="fileinput-button"><span>點此上傳圖片</span><input id="fileupload-1" type="file" name="files" class="input" ></span>
+		                     <span class=" iconshadow" ><i class="icon-remove" onClick="tool.removeMovie('#time')"></i></span><span id="upload-progress-1" class="help-inline"></span>
+		                     <br/><span class="help-text"><span class="label label-important">( size: 250px X 180px )</span></span>
+		                </div>
+		            </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Link: </label>
+				    <div class="controls">
+				     <input type="text" id="href-1" name="href" value="{$ads_1[0]['href']}"/>
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">顯示：</label>
+				    <div class="controls">
+				    <input type="checkbox" id="status-1" name="status" <if condition="$ads_1[0]['status'] eq '1'">checked</if>>
+				    </div>
+				    </div>
+				    <input type="hidden" id="id-1" name="id" value="{$ads_1[0]['id']}" />
+				    <input type="hidden" id="type-1" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn">提交</button>
+				    </div>
+				    </div>
+				  </div><!--/frame-box-div-->
+				  <br/>
+				</form>
+
+                <form class="form-horizontal" id="myForm-2" method="post" action="{:U('save')}" onsubmit="editor.sync();myForm.submit();" enctype="multipart/form-data">
+				  <div class="frame-box-div">
+				    <div class="control-group">
+				    <!--label class="control-label">Link：</label-->
+				    <div class="controls">
+				    <input type="hidden" id="image-url-2" name="image" value="{$ads_2[0]['image']}" >
+				    <span id="fileinput-image-2" class="fileinput-image"><img id="uploaded-img-2" class="uploaded-img main-banner-img" src="" /></span>
+				    </div>
+				    </div>
+				    <div class=" control-group">
+		                   <label class="control-label">廣告2：</label>
+		                   <div class="controls fileinput-button">
+		                     <span class="fileinput-button"><span>點此上傳圖片</span><input id="fileupload-2" type="file" name="files" class="input" ></span>
+		                     <span class=" iconshadow" ><i class="icon-remove" onClick="tool.removeMovie('#time')"></i></span><span id="upload-progress-2" class="help-inline"></span>
+		                     <br/><span class="help-text"><span class="label label-important">( size: 250px X 210px )</span></span>
+		                </div>
+		            </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Link: </label>
+				    <div class="controls">
+				     <input type="text" id="href-2" name="href" value="{$ads_2[0]['href']}"/>
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">顯示：</label>
+				    <div class="controls">
+				    <input type="checkbox" id="status-2" name="status" <if condition="$ads_2[0]['status'] eq '1'">checked</if>>
+				    </div>
+				    </div>
+				    <input type="hidden" id="id-2" name="id" value="{$ads_2[0]['id']}" />
+				    <input type="hidden" id="type-2" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn">提交</button>
+				    </div>
+				    </div>
+                  </div><!--/frame-box-div-->
+				</form>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/kindeditor/kindeditor.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/jquery-ui.min.js"></script>
+<script src="__JS__/jquery.fileupload.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+function change_image(url,idx){
+  if(1==idx){
+    var w=250;
+    var h=180;
+  }
+  else{
+    var w=250;
+    var h=210;
+  }
+	jQuery("#uploaded-img-"+idx).attr("src","{:SITE_PATH}"+url);
+	jQuery("#uploaded-img-"+idx).css("width",w+"px");
+	jQuery("#uploaded-img-"+idx).css("height",h+"px");
+	if(jQuery('#remove-a-'+idx).length==0) {
+		jQuery('<a id="remove-a-'+idx+'" href="{:U("del",array("type"=>"ads"))}&id='+idx+'">移除</a><br/>').insertAfter("#fileinput-image-"+idx);
+	}
+}
+
+var tool={
+		uploadMovie:function(url,btn,input,msg,idx){
+			jQuery(btn).fileupload({
+			    url: url,
+			    dataType: 'json',
+			    done: function (e, data) {
+			    	jQuery.each(data.result.files, function (index, file) {
+			    		
+			        	if(file.error){
+			        		alert(file.error);
+			        	}else{
+			        	   jQuery(input).val(file.name);
+			        	   change_image(file.name,idx);
+			        	}
+			        });
+			    },
+			    progressall: function (e, data) {
+			        var progress = parseInt(data.loaded / data.total * 100, 10);
+			         $(msg).html('upload:'+progress + '%');
+			    }
+			}).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+		},
+		removeMovie:function(obj){
+			jQuery(obj).val("");
+		}
+};	
+jQuery(function(){
+	//var url='__URL__/uploadPdf';
+	var url='__URL__/uploadPic/model/ads';
+	tool.uploadMovie(url,"#fileupload-1",'#image-url-1',"#upload-progress-1",1);
+	tool.uploadMovie(url,"#fileupload-2",'#image-url-2',"#upload-progress-2",2);
+
+	if(jQuery('#image-url-1').val()!=''){
+		change_image(jQuery('#image-url-1').val(),1);
+	}
+	jQuery('#image-url-1').change(function(){
+		change_image(jQuery('#image-url-1').val(),1);
+	});
+	if(jQuery('#image-url-2').val()!=''){
+		change_image(jQuery('#image-url-2').val(),2);
+	}
+	jQuery('#image-url-2').change(function(){
+		change_image(jQuery('#image-url-2').val(),2);
+	});
+});
+</script>
+</body>
+</html>

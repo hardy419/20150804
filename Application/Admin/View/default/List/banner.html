@@ -1,0 +1,168 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">主頁</a> <span class="divider">/</span></li>
+				    <li><a href="#">主頁管理</a> <span class="divider">/</span></li>
+				    <li class="active">主頁Banner</li>
+				    </ul>
+				<h3><if condition="$list['id'] eq ''">新增Banner<else/>編輯Banner</if></h3>	
+                  <div class="frame-box-div">
+                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" onsubmit="myForm.submit();">
+				    <div class="control-group">
+				    <label class="control-label">名稱：</label>
+				    <div class="controls">
+				    <input type="text" id="title" name="title" check="Require" warning="請輸入名稱" value="{$list.title}" / >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Link：</label>
+				    <div class="controls">
+				    <input type="text" id="href" name="href" value="{$list.href}" >
+				    </div>
+				    </div>
+				    <input type="hidden" id="image-url" name="url" value="{$list.url}" >
+				    <div class=" control-group">
+		                   <label class="control-label">相片：</label>
+		                   <div class="controls fileinput-button">
+                             <span class="fileinput-image"><img class="uploaded-img main-banner-img" src="" /></span>
+		                     <span class="fileinput-button"><span>點此上傳圖片</span><input id="fileupload" type="file" name="files" class="input" ></span>
+		                     <span class=" iconshadow" ><i class="icon-remove" onClick="tool.removeMovie('#time')"></i></span><span id="upload-progress" class="help-inline"></span>
+		                     <br/><span class="help-text"><span class="label label-important">( size: 250px X 310px )</span></span>
+		                </div>
+		            </div>
+				    <div class="control-group">
+				    <label class="control-label">顯示：</label>
+				    <div class="controls">
+				    <input type="checkbox" id="status" name="status" <if condition="$list['status'] eq '1'">checked</if>>
+				    </div>
+				    </div>
+
+					<input type="hidden" id="sid" name="sid" value="{$list.sid}" />
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">更改<else/>新增</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">取消</button></if>
+				    </div>
+				    </div>
+				    </form>
+                  </div><!--/frame-box-div-->
+<if condition="$list['id'] eq ''">
+				<h3>Banner管理</h3>	
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                    <th>顯示</th>
+	                    <th>名稱</th>
+	                    <th>相片</th>
+	                    <th>動作</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td><input style="position:relative;left:4px" type="checkbox" class="status-checkbox" name="status_group[]" <if condition="$vo['status'] eq '1'">checked</if>></td>
+	                    <td>{$vo.title}</td>
+	                    <td><img style="width:75px;height:93px;position:relative;left:-22px" src="{:SITE_PATH}{$vo.url}" /></td>
+	                    <td>
+	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">編輯</a>&nbsp;｜&nbsp;
+                        <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">刪除</a></td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+</if>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/jquery-ui.min.js"></script>
+<script src="__JS__/jquery.fileupload.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+function change_image(url){
+	jQuery(".uploaded-img").attr("src","{:SITE_PATH}"+url);
+	jQuery(".uploaded-img").css("width","100px");
+	jQuery(".uploaded-img").css("height","124px");
+	if(jQuery('.fileinput-image+br').length==0) {
+		jQuery('<br/>').insertAfter(".fileinput-image");
+	}
+}
+
+var tool={
+		uploadMovie:function(url,btn,input,msg){
+			jQuery(btn).fileupload({
+			    url: url,
+			    dataType: 'json',
+			    done: function (e, data) {
+			    	jQuery.each(data.result.files, function (index, file) {
+			    		
+			        	if(file.error){
+			        		alert(file.error);
+			        	}else{
+			        	   jQuery(input).val(file.name);
+			        	   change_image(file.name);
+			        	}
+			        });
+			    },
+			    progressall: function (e, data) {
+			        var progress = parseInt(data.loaded / data.total * 100, 10);
+			         $(msg).html('upload:'+progress + '%');
+			    }
+			}).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+		},
+		removeMovie:function(obj){
+			jQuery(obj).val("");
+		}
+};	
+jQuery(function(){
+	//var url='__URL__/uploadPdf';
+	var url='__URL__/uploadPic/model/banners';
+	tool.uploadMovie(url,"#fileupload",'#image-url',"#upload-progress");
+
+    if(jQuery('#image-url').val()!=''){
+		change_image(jQuery('#image-url').val());
+    }
+	jQuery('#image-url').change(function(){
+		change_image(jQuery('#image-url').val());
+	});
+});
+</script>
+</body>
+</html>

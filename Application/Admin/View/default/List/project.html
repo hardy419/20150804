@@ -1,0 +1,100 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">主頁</a> <span class="divider">/</span></li>
+				    <li><a href="#">現正出讓業務 頁面管理</a> <span class="divider">/</span></li>
+				    <li class="active">項目管理</li>
+				    </ul>
+
+                    <form id="myForm2" method="post" action="{:U('edit',array('type'=>$type))}">
+				    <button type="submit" class="btn btn-wide">新增項目</button>
+				    </form>
+
+				<h3>所有項目</h3>	
+
+<include file="./Application/Home/View/Common/search.html" />
+
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                    <th width="120">項目名稱<a href="javascript:ajax_submit(null,'title','span-title')"><div class="inline-block"><span class="caret" id="span-title"></span></div></a></th>
+	                    <th>行業<a href="javascript:ajax_submit(null,'c_field','span-field')"><div class="inline-block"><span class="caret" id="span-field"></span></div></a></th>
+	                    <th>出讓項目<a href="javascript:ajax_submit(null,'codename','span-codename')"><div class="inline-block"><span class="caret" id="span-codename"></span></div></a></th>
+	                    <th>每月利潤<a href="javascript:ajax_submit(null,'profit','span-profit')"><div class="inline-block"><span class="caret" id="span-profit"></span></div></a></th>
+	                    <th>定價<a href="javascript:ajax_submit(null,'price','span-price')"><div class="inline-block"><span class="caret" id="span-price"></span></div></a></th>
+	                    <th style="text-align:center">回本期<a href="javascript:ajax_submit(null,'recovery_period','span-recovery')"><div class="inline-block"><span class="caret" id="span-recovery"></span></div></a></th>
+	                    <th style="text-align:center">狀態<a href="javascript:ajax_submit(null,'status','span-status')"><div class="inline-block"><span class="caret" id="span-status"></span></div></a></th>
+	                    <th>網頁位置</th>
+	                    <th>顯示</th>
+	                    <th>動作</th>
+	                </tr>
+	              </thead>
+	              <tbody id="project-table">
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td>{$vo.title}</td>
+	                    <td><?PHP echo $catelist[$vo['c_field']]; ?></td>
+	                    <td>{$vo.codename}</td>
+	                    <td><if condition="$vo['profit_option'] eq '1'">${$vo.profit}<else/>{$vo.profit_text}</if></td>
+	                    <td>${$vo.price}</td>
+	                    <td style="text-align:center">{$vo.recovery_period}月</td>
+	                    <td style="text-align:center">{$vo.status}</td>
+	                    <td>位置：{$vo.position}</td>
+	                    <td><input style="position:relative;left:4px" type="checkbox" class="status-checkbox" name="status_group[]" <if condition="$vo['visible'] eq 'on'">checked</if>></td>
+	                    <td>
+	                    <a href="{:U('edit',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">編輯</a>&nbsp;｜&nbsp;
+                        <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">刪除</a></td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+$(function(){
+  $('#search-submit').click(function(){
+    ajax_submit(null,null);
+  });
+});
+</script>
+</body>
+</html>

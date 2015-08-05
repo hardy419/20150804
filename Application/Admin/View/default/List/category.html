@@ -1,0 +1,258 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">主頁</a> <span class="divider">/</span></li>
+				    <li><a href="#">現正出讓業務 頁面管理</a> <span class="divider">/</span></li>
+				    <li class="active">新增項目選項</li>
+				    </ul>
+
+			<div class="tabbable">
+			  <ul class="nav nav-tabs">
+                <li <if condition="$ti eq 1 OR $ti eq 2">class="active"</if>><a href="{:U('admin', array('type'=>'category','ti'=>1))}" >新增類型</a></li>
+                <li <if condition="$ti eq 3">class="active"</if>><a href="{:U('admin', array('type'=>'category','ti'=>3))}" >新增牌照</a></li>
+                <li <if condition="$ti eq 4">class="active"</if>><a href="{:U('admin', array('type'=>'category','ti'=>4))}" >新增東主參與程度</a></li>
+                <li <if condition="$ti eq 5">class="active"</if>><a href="{:U('admin', array('type'=>'category','ti'=>5))}" >新增經營場所類別</a></li>
+                <li <if condition="$ti eq 6">class="active"</if>><a href="{:U('admin', array('type'=>'category','ti'=>6))}" >新增轉讓形式</a></li>
+                <li <if condition="$ti eq 7">class="active"</if>><a href="{:U('admin', array('type'=>'category','ti'=>7))}" >新增地鐵沿線</a></li>
+                <li <if condition="$ti eq 8">class="active"</if>><a href="{:U('admin', array('type'=>'category','ti'=>8))}" >新增項目現況</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane <if condition='$ti eq 1 OR $ti eq 2'>active</if>" id="tab1">
+                  <div class="frame-box-div2">
+                    <form class="form-horizontal" id="myForm1" method="post" action="{:U('save')}">
+					<if condition="isset($pname)">
+					<input type="hidden" name="t" value="{$pname}" />
+					<else/>
+					<div class="control-group">
+						<label class="control-label">類型：</label>
+						<div class="controls">
+							<label class="radio inline">
+								<input type="radio" name="t" value="地區" <if condition="$list['id'] eq '' OR $list['t'] eq '地區'">checked</if>>地區
+							</label>
+							<label class="radio inline">
+								<input type="radio" name="t" value="行業" <if condition="$list['id'] neq '' AND $list['t'] eq '行業'">checked</if>>行業
+							</label>
+						</div>
+					</div>
+					</if>
+				    <div class="control-group">
+				    <label class="control-label">名稱：</label>
+				    <div class="controls">
+				    <input type="text" id="name1" name="name" check="Require" warning="請輸入名稱" value="{$list.name}" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">位置：</label>
+				    <div class="controls">
+				    <input class="input-mini" type="text" id="position1" name="position" check="Require" warning="請輸入位置" value=<if condition="$list['id'] neq ''">"{$list.position}"<else/>"0"</if> >
+				    </div>
+				    </div>
+
+				    <input type="hidden" id="id1" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type1" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">更改<else/>新增</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid,'ti'=>$ti))}';">取消</button>
+				    <else/><if condition="isset($pid)"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'ti'=>$ti))}';">返回</button></if></if>
+				    </div>
+				    </div>
+				    </form>
+                  </div><!--/frame-box-div-->
+                </div><!--/tab1-->
+                <div class="tab-pane <if condition='$ti neq 1 AND $ti neq 2'>active</if>" id="tab2">
+                  <div class="frame-box-div2">
+                    <form class="form-horizontal" id="myForm2" method="post" action="{:U('save')}">
+				    <input type="hidden" name="t" value="{$cur_t}" />
+                    <div class="control-group">
+				    <label class="control-label">{$cur_t}名稱：</label>
+				    <div class="controls">
+				    <input type="text" id="name2" name="name" check="Require" warning="請輸入名稱" value="{$list.name}" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">位置：</label>
+				    <div class="controls">
+				    <input class="input-mini" type="text" id="position2" name="position" check="Require" warning="請輸入位置" value=<if condition="$list['id'] neq ''">"{$list.position}"<else/>"0"</if> >
+				    </div>
+				    </div>
+
+				    <input type="hidden" id="id2" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type2" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">更改<else/>新增</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid,'ti'=>$ti))}';">取消</button></if>
+				    </div>
+				    </div>
+				    </form>
+                  </div><!--/frame-box-div-->
+                </div><!--/tab2-->
+              </div><!--/tab-content-->
+            </div><!--/tabbable-->
+
+<if condition="$list['id'] eq ''">
+<if condition="$cur_t eq '地區' OR $cur_t eq '行業'">
+				<h3>所有類型</h3>	
+                    <form class="form-inline" id="search-form" method="post" action="{:U('admin', array('type'=>'category','ti'=>$ti))}">
+                    <div class="input-append">
+				      <input class="input-medium" id="input-curt" type="text" name="cur_t" value="{$postcurt}" placeholder="類型">
+                      <div class="btn-group">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="javascript:(function(){$('#input-curt').val('地區');})();">地區</a></li>
+                          <li><a href="javascript:(function(){$('#input-curt').val('行業');})();">行業</a></li>
+                        </ul>
+                      </div>
+                    </div>
+				    <input class="input-small" type="text" id="keyword" name="keyword" value="{$keyword}" placeholder="輸入關鍵字"/>
+
+				    <input type="hidden" id="idn" name="id" value="{$list.id}" />
+                    <input type="hidden" id="typen" name="type" value="{$type}" />
+
+				    <input type="hidden" id="order" name="o" value="{$order}" />
+				    <input type="hidden" id="sort" name="s" value="{$sort}" />
+				    <a href="javascript:document.getElementById('search-form').submit();"><img src="{:SITE_PATH}Public/Img/Buy/search_btn.png" /></a>
+				    </form>
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+						<th>類型
+						  <?PHP if ('t'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('t');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+						</th>
+						<th>名稱
+						  <?PHP if ('name'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('name');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+						</th>
+						<th>位置
+						  <?PHP if ('position'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('position');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+						</th>
+	                    <th>動作</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td>{$vo.t}</td>
+	                    <td>{$vo.name}</td>
+	                    <td>{$vo.position}</td>
+	                    <td>
+	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'ti'=>$ti))}">編輯</a>&nbsp;｜&nbsp;
+                        <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">刪除</a>&nbsp;｜&nbsp;
+                        <a href="{:U('admin',array('pid'=>$vo['id'],'type'=>$type,'ti'=>$ti))}">管理</a></td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+<else/>
+				<h3>所有{$cur_t}</h3>	
+                    <form class="form-inline" id="search-form" method="post" action="{:U('admin', array('type'=>'category','ti'=>$ti))}">
+				    <input class="input-small" type="text" id="keyword" name="keyword" value="{$keyword}" placeholder="輸入關鍵字"/>
+
+				    <input type="hidden" name="cur_t" value="{$cur_t}" />
+				    <input type="hidden" id="idn" name="id" value="{$list.id}" />
+                    <input type="hidden" id="typen" name="type" value="{$type}" />
+				    <input type="hidden" id="order" name="o" value="{$order}" />
+				    <input type="hidden" id="sort" name="s" value="{$sort}" />
+				    <a href="javascript:document.getElementById('search-form').submit();"><img src="{:SITE_PATH}Public/Img/Buy/search_btn.png" /></a>
+				    </form>
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+						<th>{$cur_t}名稱
+						  <?PHP if ('name'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('name');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+						</th>
+						<th>位置
+						  <?PHP if ('position'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('position');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+						</th>
+	                    <th>動作</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td>{$vo.name}</td>
+	                    <td>{$vo.position}</td>
+	                    <td>
+	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid,'ti'=>$ti))}">編輯</a>&nbsp;｜&nbsp;
+                        <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">刪除</a>
+                        <if condition="in_array($vo['name'], array('菜式','食店','持牌狀況','類別'))">&nbsp;｜&nbsp;<a href="{:U('admin',array('pid'=>$vo['id'],'type'=>$type,'ti'=>$ti))}">管理</a></if></td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+</if>
+</if>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+</script>
+</body>
+</html>

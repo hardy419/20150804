@@ -1,0 +1,44 @@
+<div class="well sidebar-nav">
+            
+            <ul class="nav nav-list">
+            <div class="admin-name-div"><p>Admin：<?php echo $_SESSION['loginUserName'];?></p></div><div class="logout-div"><a href="javascript:void(0);" id="logoutBtn">登出</a></div><div></div>
+            <div class="change-password-div"><a href="{:U('Common/password')}">更改密碼</a></div>
+
+                <li class="nav-header">系統管理</li>
+                <li><a href="{:U('List/admin')}">管理人員設定</a></li>
+                <li class="nav-header">主頁管理</li>
+                <li><a href="{:U('List/admin',array('type'=>'banner'))}">主頁Banner</a></li>
+                <!--li><a href="{:U('List/admin',array('type'=>'page','id'=>2))}">熱門推介</a></li-->
+                <li><a href="{:U('List/admin',array('type'=>'news'))}">最新消息</a></li>
+                <li><a href="{:U('List/admin',array('type'=>'ads'))}">主頁廣告</a></li>
+                <li><a href="{:U('List/admin',array('type'=>'page','id'=>23))}">創富會</a></li>
+                <li><a href="{:U('List/admin',array('type'=>'page','id'=>24))}">加入創富會</a></li>
+                <li><a href="{:U('List/admin',array('type'=>'page','id'=>25))}">精英招聘</a></li>
+                <li><a href="{:U('List/admin',array('type'=>'page','id'=>26))}">合作夥伴</a></li>
+                <li><a href="{:U('List/admin',array('type'=>'page','id'=>27))}">為您配對合適好生意</a></li>
+                <li class="nav-header">關於我們 頁面管理</li>
+                <li><a href="{:U('List/admin',array('type'=>'page','id'=>1))}">公司簡介</a></li>
+                <li><a href="{:U('List/admin',array('type'=>'page','id'=>5))}">我們的價值觀</a></li>
+                <li><a href="{:U('List/admin',array('type'=>'page','id'=>6))}">服務範圍</a></li>
+
+                <li class="nav-header">現正出讓業務 頁面管理</li>
+                <li><a href="{:U('List/admin',array('type'=>'category'))}">新增項目選項</a></li>
+                <li><a href="{:U('List/admin',array('type'=>'project'))}">項目管理</a></li>
+            </ul>
+</div><!--/.well -->
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script>
+jQuery(function(){
+   jQuery("#logoutBtn").click(function(){
+		$.get('{:U('Common/logout')}',function(responseText){
+		    var info=responseText['info'];
+	        var status=responseText['status'];
+	        var url=responseText['url'];
+	        if(status==1){
+	        alert(info)
+	        window.location.href=url;
+	        } else alert(info);
+	  });
+   });
+});
+</script>

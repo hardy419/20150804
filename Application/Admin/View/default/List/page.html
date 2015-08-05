@@ -1,0 +1,120 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">主頁</a> <span class="divider">/</span></li>
+				    <li><a href="#">{$list.menu}</a> <span class="divider">/</span></li>
+				    <li class="active">{$list.title}</li>
+				    </ul>
+				<h3>{$list.title}</h3>	
+                  <div class="frame-box-div">
+                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" onsubmit="editor.sync();myForm.submit();" enctype="multipart/form-data">
+				    <div class="control-group">
+				    <!--label class="control-label">Link：</label-->
+				    <div class="controls">
+				    <input type="hidden" id="image-url" name="banner" value="{$list.banner}" >
+				    <span class="fileinput-image"><img class="uploaded-img main-banner-img" src="" /></span>
+				    </div>
+				    </div>
+				    <div class=" control-group">
+		                   <label class="control-label">Banner: </label>
+		                   <div class="controls fileinput-button">
+		                     <span class="fileinput-button"><span>點此上傳圖片</span><input id="fileupload" type="file" name="files" class="input" ></span>
+		                     <span class=" iconshadow" ><i class="icon-remove" onClick="tool.removeMovie('#time')"></i></span><span id="upload-progress" class="help-inline"></span>
+		                     <br/><span class="help-text"><span class="label label-important">( size: 780px X 220px )</span></span>
+		                </div>
+		            </div>
+
+				    <div class="control-group">
+				    <label class="control-label">內容：</label>
+				    <div class="controls">
+				     <textarea id="content" name="content" style="width:900px;height:400px;">{$list.content}</textarea>
+				    </div>
+				    </div>
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn">提交</button>
+				    </div>
+				    </div>
+				    </form>
+                  </div>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/kindeditor/kindeditor.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/jquery-ui.min.js"></script>
+<script src="__JS__/jquery.fileupload.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+KindEditor.ready(function(K) {
+	editor1 = K.create('#content', {
+					cssPath : ['__CSS__/../zh/css/layout.css','__CSS__/../zh/css/public.css','__CSS__/../zh/css/reset.css','__CSS__/../zh/css/about.css','__CSS__/text-info.css','__CSS__/frontforms.css','__CSS__/default.css','__CSS__/styles.css'],
+					allowFileManager : true,
+					urlType : 'domain'
+	});
+});
+
+function change_image(url){
+	jQuery(".uploaded-img").attr("src","{:SITE_PATH}"+url);
+	jQuery(".uploaded-img").css("width","195px");
+	jQuery(".uploaded-img").css("height","55px");
+	if(jQuery('.remove-a').length==0) {
+		jQuery('<a class="remove-a" href="{:U("delBanner",array("id"=>$list["id"]))}">移除</a><br/>').insertAfter(".fileinput-image");
+	}
+}
+
+var tool={
+		uploadMovie:function(url,btn,input,msg){
+			jQuery(btn).fileupload({
+			    url: url,
+			    dataType: 'json',
+			    done: function (e, data) {
+			    	jQuery.each(data.result.files, function (index, file) {
+			    		
+			        	if(file.error){
+			        		alert(file.error);
+			        	}else{
+			        	   jQuery(input).val(file.name);
+			        	   change_image(file.name);
+			        	}
+			        });
+			    },
+			    progressall: function (e, data) {
+			        var progress = parseInt(data.loaded / data.total * 100, 10);
+			         $(msg).html('upload:'+progress + '%');
+			    }
+			}).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+		},
+		removeMovie:function(obj){
+			jQuery(obj).val("");
+		}
+};	
+jQuery(function(){
+	//var url='__URL__/uploadPdf';
+	var url='__URL__/uploadPic/model/banners';
+	tool.uploadMovie(url,"#fileupload",'#image-url',"#upload-progress");
+
+    if(jQuery('#image-url').val()!=''){
+		change_image(jQuery('#image-url').val());
+    }
+	jQuery('#image-url').change(function(){
+		change_image(jQuery('#image-url').val());
+	});
+});
+</script>
+</body>
+</html>

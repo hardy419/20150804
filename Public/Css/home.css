@@ -1,0 +1,83 @@
+body, div, ul, li, span, a{margin:0px;padding:0px;}
+hr{color:rgb(250, 160,20);}
+.banner{ width:1100px; overflow: hidden;}
+.banner li {float: left; width: 1100px;}
+.banner_u {list-style: outside none none;}
+
+.banner_btn{ width: 100%;}
+
+.banner_btn ul {list-style: outside none none;float: right;width: 100px;margin-right: 52px;margin-top:5px;}
+.banner_btn li {float: left;width: 20px;}
+.banner_btn li img { cursor: pointer;}
+
+.header { width:1100px; height:25px; background-color:rgb(95,91,90); color:rgb(240,240,240); font-size:13px;}
+.header-div-right {float:right; margin:3px 63px auto 10px;}
+.header-div {float:right; margin:3px 20px auto 10px;}
+.header-div:first-child {margin-right:80px;}
+.header-div i {position:relative; top:1px;}
+.header a {text-decoration:none; font-style:italic; color:rgb(240,240,240);}
+
+.navigator {width:1020px; height:90px; margin:auto;}
+.logo-div {width:100px; float:left; margin:10px auto 10px 0px;}
+.menu-div {width:850px; margin-top:43px; margin-right:15px; float:right;}
+.menu-u   {list-style: outside none none; float:right; font-size:17px; font-weight:600;}
+.menu-u a {text-decoration:none; color:#646464;}
+.menu-u li {float: left;}
+#menu-home-div {width:78px; height:36px; text-align:center;}
+#menu-whoweare-div {width:123px; height:36px; text-align:center;}
+#menu-whatwedo-div {width:131px; height:36px; text-align:center;}
+#menu-smartchoice-div {width:122px; height:36px; text-align:center;}
+#menu-portfolio-div {width:85px; height:36px; text-align:center;}
+#menu-clientlist-div {width:98px; height:36px; text-align:center;}
+#menu-contactus-div {width:102px; height:36px; text-align:center;}
+#menu-home-a {position:relative; top:7px;}
+#menu-whoweare-a {position:relative; top:7px;}
+#menu-whatwedo-a {position:relative; top:7px;}
+#menu-smartchoice-a {position:relative; top:7px;}
+#menu-portfolio-a {position:relative; top:7px;}
+#menu-clientlist-a {position:relative; top:7px;}
+#menu-contactus-a {position:relative; top:7px;}
+
+.contents {width:1020px;margin-top:30px;margin-left:auto;margin-right:auto}
+
+.section {border-left: 6px solid rgb(254,168,21); font-size:22px; font-weight:600; color:#646464;}
+#section-services .scrollable {width:1050px;}
+.scrollable {position:relative; left:-15px;}
+#left_arrow-a,#right_arrow-a {float: left; margin-top: 60px;}
+#services-pic {list-style: outside none none; float:left;}
+#services-pic li {float:left; width:320px; margin: auto 7px;}
+#services-pic li .yellow-title {color:rgb(254,168,21); font-size:19px; font-weight:600;}
+#services-pic li .title-desc i {color:#646464; font-size:16px; font-weight:600;}
+#services-pic li p {width:280px;margin:10px 0px;}
+#services-pic>li>div>a>div {width:317px;height:180px}
+#services-pic>li>div>a>div>div {width:305px;height:170px;margin:auto;overflow:hidden;}
+.img-frame {border:1px solid #c0c0c0;text-align:center;vertical-align:middle;display: table-cell;}
+#services-pic>li>div>a img {width:305px;height:170px}
+#services-pic>li>div>a+p+p+p {line-height:1.5}
+#services-pic>li>div {height:360px;}
+
+#section-about_gc {width:630px; float:left;margin:30px 25px 30px 0px;}
+#section-about_gc>a>img {margin-top:40px;margin-left:16px;}
+#section-about_gc p {text-align:justify;line-height:1.5;}
+#section-about_gc p:not(#aboutgc-section-tag) {margin-left:16px;}
+#aboutgc-section-firstpara {position:relative;top:-10px;}
+#aboutgc-section-secondpara {position:relative;top:15px;}
+
+#section-news_event {width:320px; float:right;margin:30px 20px 30px 25px;}
+#section-news_event>b {color:#646464;}
+#section-news_event>a>img {margin-top:50px;}
+#section-news_event ul {list-style: outside none none;}
+#section-news_event ul li {}
+#section-news_event ul li a {float:left;margin:30px 0px 0px;}
+#section-news_event ul li p {width:235px; float:left;margin:30px 0px 0px 15px;font-size:14px;text-align:justify;line-height:1.5;}
+#info-div table {font-size:16px; font-style:italic; color:#323232; font-weight:300; margin:5px auto;}
+#info-div table tr {vertical-align:top;}
+
+.footer { width:1100px; height:130px; background-color:rgb(95,91,90);margin-top:20px;clear:both;}
+.footer>div {padding-top:30px; text-align:center; color:rgb(240,240,240);}
+.footer p a:first-child img {position:relative; top:6px;}
+.footer p a:first-child+a img {position:relative; top:7px;}
+
+.footer2 { width:1100px; height:50px; margin-top:80px;clear:both;}
+.footer2 div:first-child {height:20px; background-color:rgb(244,165,0);}
+.footer2 div:last-child {height:30px; background-color:rgb(252,215,144);}

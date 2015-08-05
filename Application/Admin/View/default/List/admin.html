@@ -1,0 +1,134 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">主頁</a> <span class="divider">/</span></li>
+				    <li><a href="#">系統管理</a> <span class="divider">/</span></li>
+				    <li class="active">管理人員設定</li>
+				    </ul>
+				<h3>新增管理人員</h3>	
+                  <div class="frame-box-div">
+                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" onsubmit="return check_match();myForm.submit();" enctype="multipart/form-data">
+				    <div class="control-group">
+				    <label class="control-label">名稱：</label>
+				    <div class="controls">
+				    <select id="acct_name" name="acct_name">
+				      <option value='Superadmin' <if condition="$list['acct_name'] eq 'Superadmin'">selected</if>>Superadmin</option>
+				      <option value='CEO' <if condition="$list['acct_name'] eq 'CEO'">selected</if>>CEO</option>
+				      <option value='Manager' <if condition="$list['acct_name'] eq 'Manager'">selected</if>>Manager</option>
+				      <option value='Operator' <if condition="$list['acct_name'] eq 'Operator'">selected</if>>Operator</option>
+                    </select>
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">管理人名稱：</label>
+				    <div class="controls">
+				    <input type="text" id="account" name="account" check="Require" warning="請輸入管理員名稱" value="{$list.account}" >
+				    </div>
+				    </div>
+				    <if condition="$list['id'] eq ''"><div class="control-group">
+				    <label class="control-label">密碼：</label>
+				    <div class="controls">
+				    <input type="password" id="password" name="password" check="Require" warning="請輸入密碼" value="" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">確認密碼：</label>
+				    <div class="controls">
+				    <input type="password" id="pwd2" name="pwd2" check="Require" warning="請再次輸入密碼" value="" >
+				    </div>
+				    </div></if>
+				    <div class="control-group">
+				    <label class="control-label">狀態：</label>
+				    <div class="controls">
+				    <input type="checkbox" id="status" name="status" <if condition="$list['status'] eq '1'">checked</if>>
+				    </div>
+				    </div>
+
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">更改<else/>新增</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">取消</button></if>
+				    </div>
+				    </div>
+				    </form>
+                  </div><!--/frame-box-div-->
+<if condition="$list['id'] eq ''">
+				<h3>管理人員</h3>	
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                    <th>管理人名稱</th>
+	                    <th>狀態</th>
+	                    <th>登入次數</th>
+	                    <th>動作</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td>{$vo.account}</td>
+	                    <td><if condition="$vo['status'] eq '1'"><img style="position:relative;left:4px" src="{:SITE_PATH}Public/Img/Buy/active.png" /></if></td>
+	                    <td>{$vo.login_count}</td>
+	                    <td>
+	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">編輯</a>&nbsp;｜&nbsp;
+                        <a href="{:U('Common/password',array('user'=>$vo['account']))}">更改密碼</a>&nbsp;｜&nbsp;
+                        <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">刪除</a></td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+</if>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+function check_match(){
+  if($('#password').length>0 && $('#password').val()!==$('#pwd2').val()){
+    alert('兩次密碼不一致，請重新輸入！');
+    return false;
+  }
+  return true;
+}
+
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+</script>
+</body>
+</html>

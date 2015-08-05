@@ -1,0 +1,50 @@
+*{padding:0px;margin:0px}
+a{text-decoration:none;}
+.container{width:1050px;margin:0px auto;}
+.bcontainer{width:1300px;margin:0px auto;}
+
+body{background:url(../Img/Base/bg.jpg) no-repeat center top #fff;font-size:15px;letter-spacing: 1px;font-family:"微软雅黑"}
+#box{max-width:1920px;min-width:1300px;margin:0px auto;/*min-height:1700px;*/position:relative;padding-top:112px;}
+
+#box #header{position:absolute;z-index:99;left:50%;top:0px;margin-left:-640px;width:1280px;height:180px;}
+#box #header .containerwraper{position:relative;}
+#box #header #logo{position:absolute;z-index:999;left:130px;top:14px;}
+#header #navwraper .navlist{float:left;}
+#header #navwraper{position:absolute;z-index:998;left:212px;top:0px;width:920px;padding-left:90px;padding-top:26px;height:106px;background:url(../Img/Base/navbg.png) no-repeat  center top;float:left;}
+#header #navwraper a.nav{width:96px;margin-left:10px;float:left;background:url(../Img/Base/nav.png) no-repeat left center;text-indent:-999px;overflow:hidden;}
+#header #navwraper a.newsnav{height:49px;background-position:0px 2px;margin-top: 2px;}
+#header #navwraper a.ideanav{margin-top:34px;height:42px;background-position:-100px -30px;}
+#header #navwraper a.teachernav{margin-top:54px;height:38px;background-position:-202px -50px;}
+#header #navwraper a.artnav{margin-top:67px;height:30px;background-position:-308px -64px;}
+#header #navwraper a.awardnav{margin-top:66px;height:32px;width:112px;background-position:-414px -65px;}
+#header #navwraper a.reportnav{margin-top:50px;height:38px;background-position:-538px -50px;}
+#header #navwraper a.outsidenav{margin-top:26px;height:44px;background-position:-641px -27px;}
+#header #navwraper a.contactnav{height:47px;margin-top:-10px;background-position:-743px 5px;}
+
+#header #navwraper a.newsnav:hover{height:52px;background-position:0 -55px;}
+#header #navwraper a.ideanav:hover{height:45px;background-position:-100px -87px;}
+#header #navwraper a.teachernav:hover{height:43px;background-position:-202px -107px;}
+#header #navwraper a.artnav:hover{height:40px;background-position:-308px -121px;}
+#header #navwraper a.awardnav:hover{height:40px;background-position:-414px -122px;}
+#header #navwraper a.reportnav:hover{height:45px;background-position:-538px -107px;}
+#header #navwraper a.outsidenav:hover{height:50px;background-position:-641px -84px;}
+#header #navwraper a.contactnav:hover{height:50px;background-position:-743px -52px;}
+
+
+#header #navwraper a.rollover{width:83px;float:left;margin:0 10px;background:url(../Img/Base/menu_rollover.png) no-repeat left center;text-indent:-999px;overflow:hidden;display:none;}
+#header #navwraper a.newsnav1{height: 30px; width: 157px; background-position: 0px 0px; margin-top: -25px; transform: rotate(16deg);-ms-transform:rotate(16deg); -moz-transform:rotate(16deg);-webkit-transform:rotate(16deg);-o-transform:rotate(16deg);}
+#header #navwraper a.newsnav2{height: 30px; width: 170px; background-position: -160px 0px; margin-top: 10px; transform: rotate(7deg);-ms-transform:rotate(7deg); -moz-transform:rotate(7deg);-webkit-transform:rotate(7deg);-o-transform:rotate(7deg);}
+#header #navwraper a.newsnav3{height: 30px; width: 197px; background-position: -330px 0px; margin-top: 20px; transform: rotate(-1deg);-ms-transform:rotate(-1deg); -moz-transform:rotate(-1deg);-webkit-transform:rotate(-1deg);-o-transform:rotate(-1deg);}
+#header #navwraper a.newsnav4{height: 30px; width: 100px; background-position: -525px 0px; margin-top: 5px; transform: rotate(-10deg);-ms-transform:rotate(-10deg); -moz-transform:rotate(-10deg);-webkit-transform:rotate(-10deg);-o-transform:rotate(-10deg);}
+#header #navwraper a.newsnav5{height: 30px; width: 100px; background-position: -630px 0px; margin-top: -25px; transform: rotate(-15deg);-ms-transform:rotate(-13deg); -moz-transform:rotate(-13deg);-webkit-transform:rotate(-13deg);-o-transform:rotate(-13deg);}
+
+
+.banners{width:1300px;margin:0px auto;}
+
+#pagemain .containerwraper{min-height:600px;_height:600px;}
+#footer{background:#fbd58e;height:54px;margin-top:25px;}
+.pagination-right{text-align: right; margin: 20px 0px;}
+.pagination-right ul{display: inline-block;}
+.pagination-right li{line-height: 20px; display: inline; font-size: 14px;}
+.pagination-right .disabled{cursor: default;}
+.pagination-right .active{cursor: default;}
