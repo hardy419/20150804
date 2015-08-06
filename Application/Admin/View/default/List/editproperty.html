@@ -25,8 +25,8 @@
 				    <div class="control-group">
 				    <label class="control-label">Location: </label>
 				    <div class="controls">
-				    <select id="country_id" name="country_id"><volist name="country_list" id="vo">
-				      <option value='{$vo.id}' <if condition="$list['country_id'] eq $vo['id']">selected</if>>{$vo.name}</option>
+				    <select id="country_id" name="country_id" val="{$list.country_id}"><volist name="country_list" id="vo">
+				      <option value='{$key}' <if condition="$list['country_id'] eq $key">selected</if>>{$vo.name}</option>
 				    </volist></select>
 				    <select id="city_id" name="city_id" val="{$list.city_id}"></select>
 				    <select id="suburb_id" name="suburb_id" val="{$list.suburb_id}"></select>
@@ -36,24 +36,30 @@
 				    <div class="control-group">
 				    <label class="control-label">School Near 1: </label>
 				    <div class="controls">
-				    <select id="school_near1" name="school_near1"><volist name="school_list" id="vo">
-				      <option value='{$vo.id}' <if condition="$list['school_near1'] eq $vo['id']">selected</if>>{$vo.name}</option>
+				    <select id="school_near1" name="school_near1">
+					  <option value="0" <if condition="$list['school_near1'] eq 0">selected</if>>&lt;Empty&gt;</option>
+					  <volist name="school_list" id="vo">
+				      <option value='{$key}' <if condition="$list['school_near1'] eq $key">selected</if>>{$vo.name}</option>
 				    </volist></select>
 				    </div>
 				    </div>
 				    <div class="control-group">
 				    <label class="control-label">School Near 2: </label>
 				    <div class="controls">
-				    <select id="school_near2" name="school_near2"><volist name="school_list" id="vo">
-				      <option value='{$vo.id}' <if condition="$list['school_near2'] eq $vo['id']">selected</if>>{$vo.name}</option>
+				    <select id="school_near2" name="school_near2">
+					  <option value="0" <if condition="$list['school_near2'] eq 0">selected</if>>&lt;Empty&gt;</option>
+					  <volist name="school_list" id="vo">
+				      <option value='{$key}' <if condition="$list['school_near2'] eq $key">selected</if>>{$vo.name}</option>
 				    </volist></select>
 				    </div>
 				    </div>
 				    <div class="control-group">
 				    <label class="control-label">School Near 3: </label>
 				    <div class="controls">
-				    <select id="school_near3" name="school_near3"><volist name="school_list" id="vo">
-				      <option value='{$vo.id}' <if condition="$list['school_near3'] eq $vo['id']">selected</if>>{$vo.name}</option>
+				    <select id="school_near3" name="school_near3">
+					  <option value="0" <if condition="$list['school_near3'] eq 0">selected</if>>&lt;Empty&gt;</option>
+					  <volist name="school_list" id="vo">
+				      <option value='{$key}' <if condition="$list['school_near3'] eq $key">selected</if>>{$vo.name}</option>
 				    </volist></select>
 				    </div>
 				    </div>
@@ -61,13 +67,13 @@
 				    <div class="control-group">
 				    <label class="control-label">Description - environment: </label>
 				    <div class="controls">
-				     <textarea id="description_environment" name="description_environment" rows="4" cols="50">{$list.description_environment}</textarea>
+				     <textarea class="input-xxlarge" id="description_environment" name="description_environment" rows="4" cols="50">{$list.description_environment}</textarea>
 				    </div>
 				    </div>
 				    <div class="control-group">
 				    <label class="control-label">Description - property: </label>
 				    <div class="controls">
-				     <textarea id="description_property" name="description_property" rows="4" cols="50">{$list.description_property}</textarea>
+				     <textarea class="input-xxlarge" id="description_property" name="description_property" rows="4" cols="50">{$list.description_property}</textarea>
 				    </div>
 				    </div>
 
@@ -127,7 +133,7 @@
 				    <div class="control-group">
 				    <label class="control-label">Video URL: </label>
 				    <div class="controls">
-				    <input type="text" id="video_url" name="video_url" value="http://{$list.video_url}">
+				    <input type="text" id="video_url" name="video_url" value="{$list.video_url}">
 				    </div>
 				    </div>
 
@@ -189,47 +195,59 @@ function check_form(){
 	  }
   }
 
-var cate_id=[];
-var cate_name=[];
-var cate_t=[];
-<volist name="catelist" id="vo">
-cate_id.push({$vo.id});
-cate_name.push('{$vo.name}');
-cate_t.push('{$vo.t}');
-
+var country_id=[];
+var country_name=[];
+var city_id=[];
+var city_name=[];
+var city_pid=[];
+var suburb_id=[];
+var suburb_name=[];
+var suburb_pid=[];
+<volist name="country_list" id="vo">
+country_id.push({$key});
+country_name.push('{$vo.name}');
 </volist>
-function fill_options(sel,tname){
+<volist name="city_list" id="vo">
+city_id.push({$key});
+city_name.push('{$vo.name}');
+city_pid.push('{$vo.country_id}');
+</volist>
+<volist name="suburb_list" id="vo">
+suburb_id.push({$key});
+suburb_name.push('{$vo.name}');
+suburb_pid.push('{$vo.city_id}');
+</volist>
+
+function fill_options(sel,pid,t){
   sel.html('');
   var i;
-  for(i=0;i<cate_id.length;i++) if(cate_t[i]==tname){
-    sel.append('<option value="'+cate_id[i]+'">'+cate_name[i]+'</option>');
-    if(sel.attr('val')==cate_id[i]){
-      sel.find('option[value="'+cate_id[i]+'"]').attr('selected','selected');
+  if(1==t){
+    for(i=0;i<city_id.length;i++) if(city_pid[i]==pid){
+      sel.append('<option value="'+city_id[i]+'">'+city_name[i]+'</option>');
+      if(sel.attr('val')==city_id[i]){
+        sel.find('option[value="'+city_id[i]+'"]').attr('selected','selected');
+      }
+    }
+  }
+  else{
+    for(i=0;i<suburb_id.length;i++) if(suburb_pid[i]==pid){
+      sel.append('<option value="'+suburb_id[i]+'">'+suburb_name[i]+'</option>');
+      if(sel.attr('val')==suburb_id[i]){
+        sel.find('option[value="'+suburb_id[i]+'"]').attr('selected','selected');
+      }
     }
   }
 }
-function retrieve_options(){
-  var field=$('#c_field option[value="'+$('#c_field').val()+'"]').text();
-  if('飲食業'==field){
-    fill_options($('#c_field1'),'菜式');
-    fill_options($('#c_field2'),'食店');
-  }
-  else if('教育業'==field){
-    fill_options($('#c_field1'),'持牌狀況');
-    fill_options($('#c_field2'),'類別');
-  }
-  else{
-    fill_options($('#c_field1'),field);
-    fill_options($('#c_field2'),'');
-  }
-  var area=$('#c_area option[value="'+$('#c_area').val()+'"]').text();
-  fill_options($('#c_area1'),area);
-}
 
 $(function(){
-  retrieve_options();
-  $('#c_field,#c_area').change(function(){
-    retrieve_options();
+  if($('#country_id').attr('val')==''){
+    $('#country_id').attr('val',1);
+    $('#country_id option[value="1"]').attr('selected','selected');
+  }
+  fill_options($('#city_id'),$('#country_id').attr('val'),1);
+  fill_options($('#suburb_id'),$('#city_id').attr('val'),2);
+  $('#city_id').change(function(){
+    fill_options($('#suburb_id'),$('#city_id').val(),2);
   });
 });
 </script>

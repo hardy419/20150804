@@ -66,12 +66,25 @@ CREATE TABLE IF NOT EXISTS `ml_country_en` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `ml_schooltype_en`
+--
+
+CREATE TABLE IF NOT EXISTS `ml_schooltype_en` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `ml_education_en`
 --
 
 CREATE TABLE IF NOT EXISTS `ml_education_en` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
+  `school_type` int(11) NOT NULL,
   `description` varchar(255) NOT NULL,
   `pdf` varchar(255) NOT NULL,
   `country_id` int(11) NOT NULL,
@@ -84,8 +97,9 @@ CREATE TABLE IF NOT EXISTS `ml_education_en` (
   KEY `location` (`country_id`,`city_id`,`suburb_id`),
   KEY `name` (`name`),
   KEY `order` (`order`),
-  KEY `status` (`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `status` (`status`),
+  KEY `school_type` (`school_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 

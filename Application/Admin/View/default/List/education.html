@@ -1,0 +1,246 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">Main</a> <span class="divider">/</span></li>
+				    <li><a href="#">Education Management</a> <span class="divider">/</span></li>
+				    <li class="active">School Management</li>
+				    </ul>
+				<h3><if condition="$list['id'] neq ''">Edit School<else/>New School</if></h3>	
+                  <div class="frame-box-div">
+                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" enctype="multipart/form-data">
+
+				    <div class="control-group">
+				    <label class="control-label">School Name: </label>
+				    <div class="controls">
+				    <input type="text" id="name" name="name" value="{$list.name}" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">School Type: </label>
+				    <div class="controls">
+				    <select id="school_type" name="school_type">
+					  <volist name="schooltype_list" id="vo">
+				      <option value='{$key}' <if condition="$list['school_type'] eq $key">selected</if>>{$vo.name}</option>
+				    </volist></select>
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Description: </label>
+				    <div class="controls">
+				    <textarea class="input-xxlarge" id="description" name="description" rows="5" cols="30" >{$list.description}</textarea>
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Location: </label>
+				    <div class="controls">
+				    <select id="country_id" name="country_id" val="{$list.country_id}"><volist name="country_list" id="vo">
+				      <option value='{$key}' <if condition="$list['country_id'] eq $key">selected</if>>{$vo.name}</option>
+				    </volist></select>
+				    <select id="city_id" name="city_id" val="{$list.city_id}"></select>
+				    <select id="suburb_id" name="suburb_id" val="{$list.suburb_id}"></select>
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">PDF: </label>
+				    <div class="controls">
+				    <input type="text" id="pdf" name="pdf" value="{$list.pdf}" >
+				    </div>
+				    </div>
+				    <div class=" control-group">
+		                <label class="control-label">&nbsp;</label>
+		                   <div class="controls fileinput-button">
+		                     <span class="fileinput-button"><span>Click here to upload PDF</span><input id="fileupload" type="file" name="files" class="input" ></span>
+		                     <span class=" iconshadow" ><i class="icon-remove" onClick="tool.removeMovie('#time')"></i></span><span id="upload-progress" class="help-inline"></span>
+		                     <br/><span class="help-text"><span class="label label-important">( Maximum size: 50M )</span></span>
+		                </div>
+		            </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Order: </label>
+				    <div class="controls">
+				    <input class="input-small" type="text" id="order" name="order" value="{$list.order}" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Status: </label>
+				    <div class="controls">
+				    <input type="checkbox" id="status" name="status" <if condition="$list['status'] eq '1'">checked</if>>
+				    </div>
+				    </div>
+
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">Edit<else/>Add</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">Cancel</button></if>
+				    </div>
+				    </div>
+				    </form>
+                  </div><!--/frame-box-div-->
+<if condition="$list['id'] eq ''">
+				<h3>Schools</h3>	
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                    <th>Name</th>
+	                    <th>Addtime</th>
+	                    <th>Status</th>
+	                    <th>Actions</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td>{$vo.name}</td>
+	                    <td>{$vo.addtime}</td>
+	                    <td><if condition="$vo['status'] eq '1'"><img style="position:relative;left:4px" src="{:SITE_PATH}Public/Img/Buy/active.png" /></if></td>
+	                    <td>
+	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
+                        <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">Delete</a></td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+</if>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<link rel="stylesheet" type="text/css" href="__CSS__/bootstrap-datetimepicker.css">
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/bootstrap-datetimepicker.js"></script>
+<script src="__JS__/jquery-ui.min.js"></script>
+<script src="__JS__/jquery.fileupload.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+var tool={
+		uploadMovie:function(url,btn,input,msg,idx){
+			jQuery(btn).fileupload({
+			    url: url,
+			    dataType: 'json',
+			    done: function (e, data) {
+			    	jQuery.each(data.result.files, function (index, file) {
+			    		
+			        	if(file.error){
+			        		alert(file.error);
+			        	}else{
+			        	   jQuery(input).val(file.name);
+			        	   change_image(file.name,idx);
+			        	}
+			        });
+			    },
+			    progressall: function (e, data) {
+			        var progress = parseInt(data.loaded / data.total * 100, 10);
+			         $(msg).html('upload:'+progress + '%');
+			    }
+			}).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+		},
+		removeMovie:function(obj){
+			jQuery(obj).val("");
+		}
+};	
+
+var country_id=[];
+var country_name=[];
+var city_id=[];
+var city_name=[];
+var city_pid=[];
+var suburb_id=[];
+var suburb_name=[];
+var suburb_pid=[];
+<volist name="country_list" id="vo">
+country_id.push({$key});
+country_name.push('{$vo.name}');
+</volist>
+<volist name="city_list" id="vo">
+city_id.push({$key});
+city_name.push('{$vo.name}');
+city_pid.push('{$vo.country_id}');
+</volist>
+<volist name="suburb_list" id="vo">
+suburb_id.push({$key});
+suburb_name.push('{$vo.name}');
+suburb_pid.push('{$vo.city_id}');
+</volist>
+
+function fill_options(sel,pid,t){
+  sel.html('');
+  var i;
+  if(1==t){
+    for(i=0;i<city_id.length;i++) if(city_pid[i]==pid){
+      sel.append('<option value="'+city_id[i]+'">'+city_name[i]+'</option>');
+      if(sel.attr('val')==city_id[i]){
+        sel.find('option[value="'+city_id[i]+'"]').attr('selected','selected');
+      }
+    }
+  }
+  else{
+    for(i=0;i<suburb_id.length;i++) if(suburb_pid[i]==pid){
+      sel.append('<option value="'+suburb_id[i]+'">'+suburb_name[i]+'</option>');
+      if(sel.attr('val')==suburb_id[i]){
+        sel.find('option[value="'+suburb_id[i]+'"]').attr('selected','selected');
+      }
+    }
+  }
+}
+
+$(function(){
+  $('#date').datetimepicker({
+    format: 'yyyy-mm-dd hh:ii:ss'
+  });
+
+	var url='__URL__/uploadPdf';
+	//var url='__URL__/uploadPic/model/ads';
+	tool.uploadMovie(url,"#fileupload",'#pdf',"#upload-progress",1);
+
+  if($('#country_id').attr('val')==''){
+    $('#country_id').attr('val',1);
+    $('#country_id option[value="1"]').attr('selected','selected');
+  }
+  fill_options($('#city_id'),$('#country_id').attr('val'),1);
+  fill_options($('#suburb_id'),$('#city_id').attr('val'),2);
+  $('#city_id').change(function(){
+    fill_options($('#suburb_id'),$('#city_id').val(),2);
+  });
+
+});
+</script>
+</body>
+</html>

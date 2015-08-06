@@ -8,37 +8,46 @@
         <div class="span9">
                      <ul class="breadcrumb">
 				    <li><a href="#">Main</a> <span class="divider">/</span></li>
-				    <li><a href="#">Property</a> <span class="divider">/</span></li>
-				    <li class="active">Property Management</li>
+				    <li><a href="#">Education Management</a> <span class="divider">/</span></li>
+				    <li class="active">School Type Management</li>
 				    </ul>
+				<h3><if condition="$list['id'] neq ''">Edit School Type<else/>New School Type</if></h3>	
+                  <div class="frame-box-div">
+                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" enctype="multipart/form-data">
 
-                    <form id="myForm2" method="post" action="{:U('edit',array('type'=>$type))}">
-				    <button type="submit" class="btn btn-wide">New Property</button>
+				    <div class="control-group">
+				    <label class="control-label">School Type: </label>
+				    <div class="controls">
+				    <input type="text" id="name" name="name" value="{$list.name}" >
+				    </div>
+				    </div>
+
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">Edit<else/>Add</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">Cancel</button></if>
+				    </div>
+				    </div>
 				    </form>
-
-				<h3>All Properties</h3>	
-
+                  </div><!--/frame-box-div-->
+<if condition="$list['id'] eq ''">
+				<h3>School Types</h3>	
                 <div class="frame-box-div">
                 <table class="table table-striped">
 	              <thead>
 	                <tr>
-	                    <th width="120">Name<!--a href="javascript:ajax_submit(null,'title','span-title')"><div class="inline-block"><span class="caret" id="span-title"></span></div></a--></th>
-	                    <th style="text-align:center">Status<!--a href="javascript:ajax_submit(null,'status','span-status')"><div class="inline-block"><span class="caret" id="span-status"></span></div></a--></th>
-	                    <th>Order</th>
-	                    <th>Addtime</th>
+	                    <th>School Type</th>
 	                    <th>Actions</th>
 	                </tr>
 	              </thead>
-	              <tbody id="project-table">
+	              <tbody>
 	               <volist name="list" id="vo">
 	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
 	                    <td>{$vo.name}</td>
-	                    <td style="text-align:center"><if condition="$vo['status'] eq '1'"><img style="position:relative;left:4px" src="{:SITE_PATH}Public/Img/Buy/active.png" /></if></td>
-	                    <td>{$vo.order}</td>
-	                    <td>{$vo.addtime}</td>
 	                    <td>
-	                    <a href="{:U('edit',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
-	                    <a href="{:U('photos',array('pid'=>$vo['id'],'type'=>$type.'photo'))}">Photos</a>&nbsp;｜&nbsp;
+	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
                         <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">Delete</a></td>
 	                </tr>
 	                </volist>
@@ -51,16 +60,13 @@
 	             </ul>
 	            </div>
 	            </div><!--/frame-box-div-->
+</if>
         </div><!--/span-->
       </div><!--/row-->
 
       <hr>
 
     </div>
-<script src="__JS__/jquery-1.8.2.min.js"></script>
-<script src="__JS__/jquery.form.js"></script>
-<script src="__JS__/CheckForm.js"></script>
-<script src="__JS__/bootstrap-datepicker.js"></script>
 <script src="__JS__/common.js"></script>
 <script>
   function del(url){
@@ -80,9 +86,6 @@
   }
 
 $(function(){
-  $('#search-submit').click(function(){
-    ajax_submit(null,null);
-  });
 });
 </script>
 </body>

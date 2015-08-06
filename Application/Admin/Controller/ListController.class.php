@@ -41,7 +41,7 @@ class ListController extends BaseController{
         $type=I('get.type', 'user');
         $pid=I('get.pid', null);
         $id=I('get.id', null);
-        if(!in_array($type,array('user','page','property','education','news','country','city','suburb','ebuy','testimonial'))) $this->error('',U('Index/index'));
+        if(!in_array($type,array('user','page','property','schooltype','education','news','country','city','suburb','ebuy','testimonial'))) $this->error('',U('Index/index'));
         if ('user' == $type) {
             $tname=$type;
         }
@@ -50,113 +50,84 @@ class ListController extends BaseController{
         }
 
         // Sort
-        $order = I('post.o','id');
-        $sort = I('post.s','DESC');
+        $order = I('request.o','id');
+        $sort = I('request.s','DESC');
         $this->assign ('order', $order);
         $this->assign ('sort', $sort);
 
-        // Special variables & filters
-        if ('category' == $type) {
-            $ti = I('get.ti', 1);
-            switch ($ti) {
-                case 1:
-                    $cur_t = '地區';
-                    break;
-                case 2:
-                    $cur_t = '行業';
-                    break;
-                case 3:
-                    $cur_t = '牌照';
-                    break;
-                case 4:
-                    $cur_t = '東主參與程度';
-                    break;
-                case 5:
-                    $cur_t = '經營場所類別';
-                    break;
-                case 6:
-                    $cur_t = '轉讓形式';
-                    break;
-                case 7:
-                    $cur_t = '地鐵沿線';
-                    break;
-                case 8:
-                    $cur_t = '項目現況';
-                    break;
+        $map = array ();
+        
+        if('property' == $type) {
+            $country_list = array();
+            $city_list = array();
+            $suburb_list = array();
+            $school_list = array();
+            $country_rows = M('country_'.$this->lang)->select();
+            $city_rows = M('city_'.$this->lang)->select();
+            $suburb_rows = M('suburb_'.$this->lang)->select();
+            $school_rows = M('education_'.$this->lang)->select();
+            foreach ($country_rows as $row) {
+                $country_list[$row['id']]['name'] = $row['name'];
             }
-            
-            if (null !== $pid) {
-                $pname = M('category')->where(array('id'=>$pid))->getField('name');
-                $cur_t = $pname;
-                $map = array ('t'=>$pname);
-                $this->assign ('pname', $pname);
-                $this->assign ('pid', $pid);
+            foreach ($city_rows as $row) {
+                $city_list[$row['id']]['name'] = $row['name'];
+                $city_list[$row['id']]['country_id'] = $row['country_id'];
             }
-            else if (1==$ti || 2==$ti) {
-                $map = array ('t'=>array('in','地區,行業'));
+            foreach ($suburb_rows as $row) {
+                $suburb_list[$row['id']]['name'] = $row['name'];
+                $suburb_list[$row['id']]['city_id'] = $row['city_id'];
             }
-            else {
-                $map = array ('t'=>$cur_t);
+            foreach ($school_rows as $row) {
+                $school_list[$row['id']]['name'] = $row['name'];
             }
-
-            // Search
-            $postcurt = I('post.cur_t',null);
-            $keyword = I('post.keyword',null);
-            if($postcurt!==null && !empty($postcurt)) {
-                $cur_t = $postcurt;
-                $map = array ('t'=>$cur_t);
-                $this->assign ('postcurt', $postcurt);
-            }
-            if (null !== $keyword && !empty($keyword)) {
-                $map['name|t|position'] = array ('like', "%{$keyword}%");
-                $this->assign ('keyword', $keyword);
-            }
-
-            $this->assign ('ti', $ti);
-            $this->assign ('cur_t', $cur_t);
+            $this->assign('country_list', $country_list);
+            $this->assign('city_list', $city_list);
+            $this->assign('suburb_list', $suburb_list);
+            $this->assign('school_list', $school_list);
         }
-        else if('project' == $type) {
-            // Retrieve the category list for selection
-            $dblist = M('category_'.$this->lang)->select();
-            $catelist = array();
-            foreach ($dblist as $item) {
-                $catelist[$item['id']] = $item['name'];
+        else if('city' == $type) {
+            $country_list = array();
+            $country_rows = M('country_'.$this->lang)->select();
+            foreach ($country_rows as $row) {
+                $country_list[$row['id']]['name'] = $row['name'];
             }
-            $this->assign('catelist', $catelist);
-            $this->assign('categories', $dblist);
-
-            $this->assign ('text_touzishouxuan', '投資首選');
-            $this->assign ('text_chaozhituijie', '筍盤推介');
-            $this->assign ('text_xiaobenchuangye', '小本創業');
-            $this->assign ('text_xuanzequanbu', '選擇全部');
-            $this->assign ('text_renhehangye', '任何行業');
-            $this->assign ('text_suoyouleibie', '所有類別');
-            $this->assign ('text_suoyou', '所有');
-            $this->assign ('text_renhe', '任何');
-            $this->assign ('text_quan', '全');
-            $this->assign ('text_qu', '區');
-
-            $this->assign ('area_id', 1);
-            $this->assign ('field_id', 2);
-            $this->assign ('participation_id', 4);
-            $this->assign ('location_id', 5);
-            $this->assign ('metro_id', 7);
-            $this->assign ('yinshiye_id', 9);
-            $this->assign ('jiaoyuye_id', 17);
-            $this->assign ('caishi_id', 10);
-            $this->assign ('shidian_id', 11);
-            $this->assign ('chipaizhuangkuang_id', 23);
-            $this->assign ('leibie_id', 24);
-            $this->assign ('hkjingwai_id', 126);
+            $this->assign('country_list', $country_list);
         }
-        else if('ads' == $type) {
-            $ads_1 = M('ads_'.$this->lang)->where(array('type'=>1))->select();
-            $ads_2 = M('ads_'.$this->lang)->where(array('type'=>2))->select();
-            $this->assign('ads_1', $ads_1);
-            $this->assign('ads_2', $ads_2);
+        else if('suburb' == $type) {
+            $city_list = array();
+            $city_rows = M('city_'.$this->lang)->select();
+            foreach ($city_rows as $row) {
+                $city_list[$row['id']]['name'] = $row['name'];
+            }
+            $this->assign('city_list', $city_list);
         }
-        else {
-            $map = array ();
+        else if('education' == $type) {
+            $country_list = array();
+            $city_list = array();
+            $suburb_list = array();
+            $schooltype_list = array();
+            $country_rows = M('country_'.$this->lang)->select();
+            $city_rows = M('city_'.$this->lang)->select();
+            $suburb_rows = M('suburb_'.$this->lang)->select();
+            $schooltype_rows = M('schooltype_'.$this->lang)->select();
+            foreach ($country_rows as $row) {
+                $country_list[$row['id']]['name'] = $row['name'];
+            }
+            foreach ($city_rows as $row) {
+                $city_list[$row['id']]['name'] = $row['name'];
+                $city_list[$row['id']]['country_id'] = $row['country_id'];
+            }
+            foreach ($suburb_rows as $row) {
+                $suburb_list[$row['id']]['name'] = $row['name'];
+                $suburb_list[$row['id']]['city_id'] = $row['city_id'];
+            }
+            foreach ($schooltype_rows as $row) {
+                $schooltype_list[$row['id']]['name'] = $row['name'];
+            }
+            $this->assign('country_list', $country_list);
+            $this->assign('city_list', $city_list);
+            $this->assign('suburb_list', $suburb_list);
+            $this->assign('schooltype_list', $schooltype_list);
         }
 
         if (null !== $id) {
@@ -217,6 +188,36 @@ class ListController extends BaseController{
         $this->assign('pid',$pid);
         $type=I('get.type');
         if(!in_array($type,array('property')))$this->error('',U('Index/index'));
+
+        if('property' == $type) {
+            $country_list = array();
+            $city_list = array();
+            $suburb_list = array();
+            $school_list = array();
+            $country_rows = M('country_'.$this->lang)->select();
+            $city_rows = M('city_'.$this->lang)->select();
+            $suburb_rows = M('suburb_'.$this->lang)->select();
+            $school_rows = M('education_'.$this->lang)->select();
+            foreach ($country_rows as $row) {
+                $country_list[$row['id']]['name'] = $row['name'];
+            }
+            foreach ($city_rows as $row) {
+                $city_list[$row['id']]['name'] = $row['name'];
+                $city_list[$row['id']]['country_id'] = $row['country_id'];
+            }
+            foreach ($suburb_rows as $row) {
+                $suburb_list[$row['id']]['name'] = $row['name'];
+                $suburb_list[$row['id']]['city_id'] = $row['city_id'];
+            }
+            foreach ($school_rows as $row) {
+                $school_list[$row['id']]['name'] = $row['name'];
+            }
+            $this->assign('country_list', $country_list);
+            $this->assign('city_list', $city_list);
+            $this->assign('suburb_list', $suburb_list);
+            $this->assign('school_list', $school_list);
+        }
+
         $this->assign('type',$type);
         $tname=$type.'_'.$this->lang;
 
@@ -254,7 +255,7 @@ class ListController extends BaseController{
     public function save(){
         if(''==I('post.id','') || 0==I('post.id','')) unset($_POST['id']);
         $type=I('post.type');
-        if(!in_array($type,array('user','page','property','education','news','country','city','suburb','ebuy','testimonial')))$this->error('非法操作類型',U('Index/index'));
+        if(!in_array($type,array('user','page','property','schooltype','education','news','country','city','suburb','ebuy','testimonial')))$this->error('非法操作類型',U('Index/index'));
         if ('user' == $type) {
             $tname=$type;
         }
@@ -595,7 +596,7 @@ class ListController extends BaseController{
     }
     public function del(){
         $type=I('get.type');
-        if(!in_array($type,array('user','page','property','propertyphoto','education','news','country','city','suburb','ebuy','testimonial')))$this->error('',U('Index/index'));
+        if(!in_array($type,array('user','page','property','propertyphoto','schooltype','education','news','country','city','suburb','ebuy','testimonial')))$this->error('',U('Index/index'));
         if ('user' == $type) {
             $tname=$type;
         }

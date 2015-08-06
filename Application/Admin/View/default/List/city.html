@@ -1,0 +1,103 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">Main</a> <span class="divider">/</span></li>
+				    <li><a href="#">Location Management</a> <span class="divider">/</span></li>
+				    <li class="active">City</li>
+				    </ul>
+				<h3><if condition="$list['id'] neq ''">Edit City<else/>New City</if></h3>	
+                  <div class="frame-box-div">
+                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" enctype="multipart/form-data">
+
+				    <div class="control-group">
+				    <label class="control-label">City Name: </label>
+				    <div class="controls">
+				    <input type="text" id="name" name="name" value="{$list.name}" >
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Country: </label>
+				    <div class="controls">
+				    <select id="country_id" name="country_id"><volist name="country_list" id="vo">
+				      <option value='{$key}' <if condition="$list['country_id'] eq $key">selected</if>>{$vo.name}</option>
+				    </volist></select>
+				    </div>
+				    </div>
+
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">Edit<else/>Add</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">Cancel</button></if>
+				    </div>
+				    </div>
+				    </form>
+                  </div><!--/frame-box-div-->
+<if condition="$list['id'] eq ''">
+				<h3>Cities</h3>	
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                    <th>City</th>
+	                    <th>Country</th>
+	                    <th>Actions</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td>{$vo.name}</td>
+	                    <td>{$country_list[$vo['country_id']]['name']}</td>
+	                    <td>
+	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
+                        <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">Delete</a></td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+</if>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+$(function(){
+});
+</script>
+</body>
+</html>

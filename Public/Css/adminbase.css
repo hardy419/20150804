@@ -21,7 +21,7 @@ a{color:#000}
 .table th, .table td{padding:8px 4px;}
 .form-horizontal .control-label{width:130px;font-weight:bold}
 .form-horizontal .controls{margin-left:140px}
-.form-project .control-label{width:150px;font-weight:bold}
+.form-project .control-label{width:200px;font-weight:bold}
 .form-project .controls{margin-left:200px}
 .form-project .control-group{margin-bottom:10px}
 .form-project {line-height:10px}
