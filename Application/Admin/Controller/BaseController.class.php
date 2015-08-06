@@ -17,7 +17,7 @@ class BaseController extends Controller {
 			$this->error('你所在的用戶組沒有此權限');
 		} 
 
-		$this->lang = I('cookie.lang', 'zh');
+		$this->lang = I('cookie.lang', 'en');
 		$this->assign ('lang', $this->lang);
 	}
 	public function _upload($module,$cpath,$thumb,$width,$height){

@@ -1,0 +1,237 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">Main</a> <span class="divider">/</span></li>
+				    <li><a href="#">Property</a> <span class="divider">/</span></li>
+				    <li class="active">Property Management</li>
+				    </ul>
+
+				<h3>Property</h3>	
+                  <div class="frame-box-div">
+                    <form class="form-horizontal form-project" id="myForm" method="post" action="{:U('save')}" onsubmit="return check_form();myForm.submit();" enctype="multipart/form-data">
+				    <div class="control-group">
+				    <label class="control-label">Property Name: </label>
+				    <div class="controls">
+				    <input type="text" id="name" name="name" value="{$list.name}">
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Location: </label>
+				    <div class="controls">
+				    <select id="country_id" name="country_id"><volist name="country_list" id="vo">
+				      <option value='{$vo.id}' <if condition="$list['country_id'] eq $vo['id']">selected</if>>{$vo.name}</option>
+				    </volist></select>
+				    <select id="city_id" name="city_id" val="{$list.city_id}"></select>
+				    <select id="suburb_id" name="suburb_id" val="{$list.suburb_id}"></select>
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">School Near 1: </label>
+				    <div class="controls">
+				    <select id="school_near1" name="school_near1"><volist name="school_list" id="vo">
+				      <option value='{$vo.id}' <if condition="$list['school_near1'] eq $vo['id']">selected</if>>{$vo.name}</option>
+				    </volist></select>
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">School Near 2: </label>
+				    <div class="controls">
+				    <select id="school_near2" name="school_near2"><volist name="school_list" id="vo">
+				      <option value='{$vo.id}' <if condition="$list['school_near2'] eq $vo['id']">selected</if>>{$vo.name}</option>
+				    </volist></select>
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">School Near 3: </label>
+				    <div class="controls">
+				    <select id="school_near3" name="school_near3"><volist name="school_list" id="vo">
+				      <option value='{$vo.id}' <if condition="$list['school_near3'] eq $vo['id']">selected</if>>{$vo.name}</option>
+				    </volist></select>
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Description - environment: </label>
+				    <div class="controls">
+				     <textarea id="description_environment" name="description_environment" rows="4" cols="50">{$list.description_environment}</textarea>
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Description - property: </label>
+				    <div class="controls">
+				     <textarea id="description_property" name="description_property" rows="4" cols="50">{$list.description_property}</textarea>
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Price range from: </label>
+				    <div class="controls">
+				    <input type="text" id="price_range_from" name="price_range_from" value="{$list.price_range_from}">
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Price range to: </label>
+				    <div class="controls">
+				    <input type="text" id="price_range_to" name="price_range_to" value="{$list.price_range_to}">
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Completion date: </label>
+				    <div class="controls">
+				    <input type="text" id="completion_date" name="completion_date" value="{$list.completion_date}">
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Info last updated - Date: </label>
+				    <div class="controls">
+				    <input type="text" id="info_last_updated_date" name="info_last_updated_date" value="{$list.info_last_updated_date}">
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Document download 1: </label>
+				    <div class="controls">
+				    <input type="text" id="document_download1" name="document_download1" value="{$list.document_download1}">
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Document download 2: </label>
+				    <div class="controls">
+				    <input type="text" id="document_download2" name="document_download2" value="{$list.document_download2}">
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Document download 3: </label>
+				    <div class="controls">
+				    <input type="text" id="document_download3" name="document_download3" value="{$list.document_download3}">
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Google Map: </label>
+				    <div class="controls">
+				    <input type="text" id="google_map" name="google_map" value="{$list.google_map}">
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Video URL: </label>
+				    <div class="controls">
+				    <input type="text" id="video_url" name="video_url" value="http://{$list.video_url}">
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Sort order: </label>
+				    <div class="controls">
+				    <input type="text" id="order" name="order" value="{$list.order}">
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Status: </label>
+				    <div class="controls">
+				    <input type="checkbox" id="status" name="status" <if condition="$list['status'] eq '1'">checked</if>>
+				    </div>
+				    </div>
+
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">Edit<else/>Add</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">Cancel</button></if>
+				    </div>
+				    </div>
+				    </form>
+                  </div><!--/frame-box-div-->
+
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/kindeditor/kindeditor.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+function check_form(){
+  return true;
+}
+
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+var cate_id=[];
+var cate_name=[];
+var cate_t=[];
+<volist name="catelist" id="vo">
+cate_id.push({$vo.id});
+cate_name.push('{$vo.name}');
+cate_t.push('{$vo.t}');
+
+</volist>
+function fill_options(sel,tname){
+  sel.html('');
+  var i;
+  for(i=0;i<cate_id.length;i++) if(cate_t[i]==tname){
+    sel.append('<option value="'+cate_id[i]+'">'+cate_name[i]+'</option>');
+    if(sel.attr('val')==cate_id[i]){
+      sel.find('option[value="'+cate_id[i]+'"]').attr('selected','selected');
+    }
+  }
+}
+function retrieve_options(){
+  var field=$('#c_field option[value="'+$('#c_field').val()+'"]').text();
+  if('飲食業'==field){
+    fill_options($('#c_field1'),'菜式');
+    fill_options($('#c_field2'),'食店');
+  }
+  else if('教育業'==field){
+    fill_options($('#c_field1'),'持牌狀況');
+    fill_options($('#c_field2'),'類別');
+  }
+  else{
+    fill_options($('#c_field1'),field);
+    fill_options($('#c_field2'),'');
+  }
+  var area=$('#c_area option[value="'+$('#c_area').val()+'"]').text();
+  fill_options($('#c_area1'),area);
+}
+
+$(function(){
+  retrieve_options();
+  $('#c_field,#c_area').change(function(){
+    retrieve_options();
+  });
+});
+</script>
+</body>
+</html>

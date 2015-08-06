@@ -41,7 +41,7 @@ class ListController extends BaseController{
         $type=I('get.type', 'user');
         $pid=I('get.pid', null);
         $id=I('get.id', null);
-        if(!in_array($type,array('user', 'banner','page','category','project','ads','news'))) $this->error('',U('Index/index'));
+        if(!in_array($type,array('user','page','property','education','news','country','city','suburb','ebuy','testimonial'))) $this->error('',U('Index/index'));
         if ('user' == $type) {
             $tname=$type;
         }
@@ -202,8 +202,8 @@ class ListController extends BaseController{
         if(empty($pid)||!is_numeric($pid)){
             $this->error('invalid action',$jump);
         }
-        if(!in_array($type,array('projectphoto','tutorsphotos','casephotos','studentphotos'))) $this->error('',U('Index/index'));
-        $tname=$type;
+        if(!in_array($type,array('propertyphoto'))) $this->error('',U('Index/index'));
+        $tname=$type.'_'.$this->lang;
         $this->_select($tname,array('pid'=>$pid),'sid','desc');
         $this->assign('type',$type);
         cookie("__CURRENTURL__",__SELF__);
@@ -216,36 +216,15 @@ class ListController extends BaseController{
         $pid=I('get.pid',0);
         $this->assign('pid',$pid);
         $type=I('get.type');
-        if(!in_array($type,array('project')) || (empty($id) && !in_array($type,array('project'))))$this->error('',U('Index/index'));
+        if(!in_array($type,array('property')))$this->error('',U('Index/index'));
         $this->assign('type',$type);
-        $tname=$type;
-
-        if('project' == $type) {
-            // Retrieve the category list for selection
-            $catelist = M('category_'.$this->lang)->select();
-            $this->assign('catelist', $catelist);
-        }
+        $tname=$type.'_'.$this->lang;
 
         cookie('current',$id);
         if(!empty($id)){
             $this->_edit($tname,$id);
             $this->display('edit'.$type);
         }else{
-
-            if('banner' == $type) {
-                // Searching for the smallest id number available for new banner
-                $mainbanners = M('banner')->where('sid >= 80001 AND sid < 90000')->getField('sid', true);
-                $temp_sid = 80001;
-                do {
-                    if (!in_array ($temp_sid, $mainbanners)) {
-                        break;
-                    }
-                    else {
-                        ++$temp_sid;
-                    }
-                }while($temp_sid < 90000);
-                $this->assign('sid', $temp_sid);
-            }
 
             $this->display('edit'.$type);
         }
@@ -255,7 +234,7 @@ class ListController extends BaseController{
         $id=isset($_GET['id'])?I('get.id'):'';
         $type=I('get.type');
         $this->assign('type',$type);
-        $tname=$type;
+        $tname=$type.'_'.$this->lang;
         if(!empty($id)){
             $list=M($tname)->where(array('id'=>$id))->find();
             echo json_encode($list);
@@ -275,7 +254,7 @@ class ListController extends BaseController{
     public function save(){
         if(''==I('post.id','') || 0==I('post.id','')) unset($_POST['id']);
         $type=I('post.type');
-        if(!in_array($type,array('user', 'banner','page','category','project','ads','news')))$this->error('非法操作類型',U('Index/index'));
+        if(!in_array($type,array('user','page','property','education','news','country','city','suburb','ebuy','testimonial')))$this->error('非法操作類型',U('Index/index'));
         if ('user' == $type) {
             $tname=$type;
         }
@@ -318,6 +297,12 @@ class ListController extends BaseController{
                 if(empty($date))$db->date=date('Y-m-d');
                 else $db->date=$date;
             }
+            $addtime=I('post.addtime');
+            if(in_array('addtime',$fields)){
+                if(empty($addtime))$db->addtime=date('Y-m-d H:i:s');
+                else $db->addtime=$addtime;
+            }
+
             $pwd = I('post.password', null);
             if (null !== $pwd && in_array('password',$fields)) {
                 $db->password = md5 ($pwd);
@@ -372,7 +357,7 @@ class ListController extends BaseController{
     }
     public function savePhotos(){
         $type=I('post.type');
-        $tname=$type;
+        $tname=$type.'_'.$this->lang;
         $jump=cookie("__CURRENTURL__");
         $db=D($tname);
         
@@ -610,7 +595,7 @@ class ListController extends BaseController{
     }
     public function del(){
         $type=I('get.type');
-        if(!in_array($type,array('user', 'banner','page','category','project','ads','news')))$this->error('',U('Index/index'));
+        if(!in_array($type,array('user','page','property','propertyphoto','education','news','country','city','suburb','ebuy','testimonial')))$this->error('',U('Index/index'));
         if ('user' == $type) {
             $tname=$type;
         }

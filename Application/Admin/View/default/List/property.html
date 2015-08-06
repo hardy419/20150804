@@ -1,0 +1,89 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">Main</a> <span class="divider">/</span></li>
+				    <li><a href="#">Property</a> <span class="divider">/</span></li>
+				    <li class="active">Property Management</li>
+				    </ul>
+
+                    <form id="myForm2" method="post" action="{:U('edit',array('type'=>$type))}">
+				    <button type="submit" class="btn btn-wide">New Property</button>
+				    </form>
+
+				<h3>All Properties</h3>	
+
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                    <th width="120">Name<a href="javascript:ajax_submit(null,'title','span-title')"><div class="inline-block"><span class="caret" id="span-title"></span></div></a></th>
+	                    <th style="text-align:center">Status<a href="javascript:ajax_submit(null,'status','span-status')"><div class="inline-block"><span class="caret" id="span-status"></span></div></a></th>
+	                    <th>Order</th>
+	                    <th>Addtime</th>
+	                    <th>Actions</th>
+	                </tr>
+	              </thead>
+	              <tbody id="project-table">
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td>{$vo.name}</td>
+	                    <td style="text-align:center">{$vo.status}</td>
+	                    <td>{$vo.order}</td>
+	                    <td>{$vo.addtime}</td>
+	                    <td>
+	                    <a href="{:U('edit',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
+	                    <a href="{:U('photos',array('pid'=>$vo['id'],'type'=>$type.'photo'))}">Photos</a>&nbsp;｜&nbsp;
+                        <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">Delete</a></td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+$(function(){
+  $('#search-submit').click(function(){
+    ajax_submit(null,null);
+  });
+});
+</script>
+</body>
+</html>
