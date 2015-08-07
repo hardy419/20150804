@@ -255,7 +255,7 @@ class ListController extends BaseController{
     public function save(){
         if(''==I('post.id','') || 0==I('post.id','')) unset($_POST['id']);
         $type=I('post.type');
-        if(!in_array($type,array('user','page','property','schooltype','education','news','country','city','suburb','ebuy','testimonial')))$this->error('非法操作類型',U('Index/index'));
+        if(!in_array($type,array('user','page','property','schooltype','education','news','country','city','suburb','ebuy','testimonial')))$this->error('Invalid Operation',U('Index/index'));
         if ('user' == $type) {
             $tname=$type;
         }
@@ -352,8 +352,8 @@ class ListController extends BaseController{
             }
 
             cookie('current',$id);
-            if ($query)$this->success('操作成功',$jump);
-            else $this->error('操作失敗/未作任何更改',$jump);
+            if ($query)$this->success('Success',$jump);
+            else $this->error('Failure/Nothing changed',$jump);
         }
     }
     public function savePhotos(){
@@ -574,14 +574,14 @@ class ListController extends BaseController{
         else $this->error('Delete Failure',$jump);
     }
     public function delBanner(){
-        $tname='page';
+        $tname='testimonial_'.$this->lang;
         $id=I('get.id',null);
         $jump=cookie('__CURRENTURL__');
-        if(null===$id) $this->error('移除失敗',$jump);
+        if(null===$id) $this->error('Remove Failure',$jump);
         
-        $query=M($tname)->where(array('id'=>$id))->setField('banner','');
-        if ($query)$this->success('移除成功',$jump);
-        else $this->error('移除失敗',$jump);
+        $query=M($tname)->where(array('id'=>$id))->setField('photo','');
+        if ($query)$this->success('Remove Success',$jump);
+        else $this->error('Remove Failure',$jump);
     }
 
     public function checkChild($type,$id,$jump){
