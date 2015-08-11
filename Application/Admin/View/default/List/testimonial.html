@@ -11,62 +11,43 @@
 				    <li><a href="#">Testimonial Management</a> <span class="divider">/</span></li>
 				    <li class="active">Testimonial Management</li>
 				    </ul>
-				<h3><if condition="$list['id'] neq ''">Edit Testimonial<else/>Add Testimonial</if></h3>	
-                  <div class="frame-box-div">
-                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" enctype="multipart/form-data">
-				    <div class="control-group">
-				    <label class="control-label">Testimonial Name: </label>
-				    <div class="controls">
-				    <input type="text" id="name" name="name" value="{$list.name}" >
-				    </div>
-				    </div>
-				    <div class="control-group">
-				    <label class="control-label">Description: </label>
-				    <div class="controls">
-				    <textarea class="input-xxlarge" id="description" name="description" rows="5" cols="30" >{$list.description}</textarea>
-				    </div>
-				    </div>
-				    <div class="control-group">
-				    <label class="control-label">Date: </label>
-				    <div class="controls">
-				    <input type="text" id="date" name="date" value="{$list.date}" >
-				    </div>
-				    </div>
 
-		<div class="control-group">
-		  <!--label class="control-label">Link：</label-->
-		  <div class="controls">
-			<input type="hidden" id="image-url" name="photo" value="{$list.photo}" >
-			<span class="fileinput-image"><img class="uploaded-img main-banner-img" src="" /></span>
-		  </div>
-		</div>
-		<div class=" control-group">
-		  <label class="control-label">Photo: </label>
-		  <div class="controls fileinput-button">
-			<span class="fileinput-button"><span>Click to upload image</span><input id="fileupload" type="file" name="files" class="input" ></span>
-			<span class=" iconshadow" ><i class="icon-remove" onClick="tool.removeMovie('#time')"></i></span><span id="upload-progress" class="help-inline"></span>
-			<br/><span class="help-text"><span class="label label-important">( Maximum size: 50M )</span></span>
-		  </div>
-	   </div>
+                    <form id="myForm2" method="post" action="{:U('edit',array('type'=>$type))}">
+				    <button type="submit" class="btn btn-wide">Add Testimonial</button>
+				    </form>
+
+				<h3>Testimonial</h3>	
+                    <form class="form-inline" id="search-form" method="post" action="{:U('admin', array('type'=>'testimonial'))}">
+				    Name: &nbsp;&nbsp;<input class="input-small" type="text" id="keyword" name="keyword" value="{$keyword}" placeholder="Name"/>&nbsp;&nbsp;&nbsp;&nbsp;
+				    Date: &nbsp;&nbsp;<input class="input-small" type="text" id="datefrom" name="datefrom" value="{$datefrom}" placeholder="From"/>
+				    <input class="input-small" type="text" id="dateto" name="dateto" value="{$dateto}" placeholder="To"/>
 
 				    <input type="hidden" id="id" name="id" value="{$list.id}" />
                     <input type="hidden" id="type" name="type" value="{$type}" />
-				    <div class="control-group">
-				    <div class="controls">
-				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">Edit<else/>Add</if></button>
-				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">Cancel</button></if>
-				    </div>
-				    </div>
+
+				    <input type="hidden" id="order" name="o" value="{$order}" />
+				    <input type="hidden" id="sort" name="s" value="{$sort}" />
+				    <input type="hidden" id="page" name="p" value="{$page}" />
+				    <input type="submit" value="Search" />
 				    </form>
-                  </div><!--/frame-box-div-->
-<if condition="$list['id'] eq ''">
-				<h3>Testimonial</h3>	
                 <div class="frame-box-div">
                 <table class="table table-striped">
 	              <thead>
 	                <tr>
-	                    <th>Name</th>
-	                    <th>Date</th>
+	                    <th width="500">Name
+						  <?PHP if ('name'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('name');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th width="200">Date
+						  <?PHP if ('date'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('date');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
 	                    <th>Actions</th>
 	                </tr>
 	              </thead>
@@ -76,7 +57,7 @@
 	                    <td>{$vo.name}</td>
 	                    <td>{$vo.date}</td>
 	                    <td>
-	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
+	                    <a href="{:U('edit',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
                         <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">Delete</a></td>
 	                </tr>
 	                </volist>
@@ -89,7 +70,6 @@
 	             </ul>
 	            </div>
 	            </div><!--/frame-box-div-->
-</if>
         </div><!--/span-->
       </div><!--/row-->
 
@@ -100,8 +80,6 @@
 <script src="__JS__/jquery-1.8.2.min.js"></script>
 <script src="__JS__/jquery.form.js"></script>
 <script src="__JS__/CheckForm.js"></script>
-<script src="__JS__/jquery-ui.min.js"></script>
-<script src="__JS__/jquery.fileupload.js"></script>
 <script src="__JS__/bootstrap-datepicker.js"></script>
 <script src="__JS__/common.js"></script>
 <script>
@@ -121,55 +99,9 @@
 	  }
   }
 
-function change_image(url){ 
- jQuery(".uploaded-img").attr("src","{:SITE_PATH}"+url);
- jQuery(".uploaded-img").css("width","160px");
- jQuery(".uploaded-img").css("height","160px");
- if(jQuery('.remove-a').length==0) {
-  jQuery('<a class="remove-a" href="{:U("delBanner",array("id"=>$list["id"]))}">Remove</a><br/>').insertAfter(".fileinput-image");
- }
-}
-
-var tool={
-  uploadMovie:function(url,btn,input,msg){
-   jQuery(btn).fileupload({
-       url: url,
-       dataType: 'json',
-       done: function (e, data) {
-        jQuery.each(data.result.files, function (index, file) {
-         
-            if(file.error){
-             alert(file.error);
-            }else{
-               jQuery(input).val(file.name);
-               change_image(file.name);
-            }
-           });
-       },
-       progressall: function (e, data) {
-           var progress = parseInt(data.loaded / data.total * 100, 10);
-            $(msg).html('upload:'+progress + '%');
-       }
-   }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
-  },
-  removeMovie:function(obj){
-   jQuery(obj).val("");
-  }
-};
-
 $(function(){
-  $('#date').datepicker({
+  $('#datefrom,#dateto').datepicker({
     format: 'yyyy-mm-dd'
-  });
-
- var url='__URL__/uploadPic/model/banners';
- tool.uploadMovie(url,"#fileupload",'#image-url',"#upload-progress");
-
-  if(jQuery('#image-url').val()!=''){
-    change_image(jQuery('#image-url').val());
-  }
-  jQuery('#image-url').change(function(){
-    change_image(jQuery('#image-url').val());
   });
 });
 </script>

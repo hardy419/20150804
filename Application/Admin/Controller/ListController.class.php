@@ -56,12 +56,25 @@ class ListController extends BaseController{
         $this->assign ('sort', $sort);
 
         // Search
-        $keyword = I('request.keyword',null);
-        $datefrom = I('request.datefrom',null);
-        $dateto = I('request.dateto',null);
+        $keyword = I('request.keyword','');
+        $datefrom = I('request.datefrom','');
+        $dateto = I('request.dateto','');
         $this->assign ('keyword', $keyword);
         $this->assign ('datefrom', $datefrom);
         $this->assign ('dateto', $dateto);
+
+        $city = I('request.city','');
+        $suburb = I('request.suburb','');
+        $education = I('request.education','');
+        $this->assign ('city', $city);
+        $this->assign ('suburb', $suburb);
+        $this->assign ('education', $education);
+        $city_id = I('request.city-id','');
+        $suburb_id = I('request.suburb-id','');
+        $education_id = I('request.education-id','');
+        $this->assign ('city_id', $city_id);
+        $this->assign ('suburb_id', $suburb_id);
+        $this->assign ('education_id', $education_id);
 
         // page
         $page = I('request.page',1);
@@ -70,19 +83,28 @@ class ListController extends BaseController{
         $map = array ();
         
         if('property' == $type) {
-            if (null != $keyword) {
+            if ('' != $keyword) {
                 $map['name'] = array ('like', "%{$keyword}%");
             }
-            if (null != $datefrom) {
+            if ('' != $datefrom) {
                 $map['addtime'] = array ('egt', $datefrom);
             }
-            if (null != $dateto) {
+            if ('' != $dateto) {
                 if (isset ($map['addtime'])) {
                     $map['addtime'] = array ('between', array($datefrom, $dateto));
                 }
                 else {
                     $map['addtime'] = array ('elt', $dateto);
                 }
+            }
+            if ('' != $suburb_id) {
+                $map['suburb_id'] = $suburb_id;
+            }
+            if ('' != $city_id) {
+                $map['city_id'] = $city_id;
+            }
+            if ('' != $education_id) {
+                $map['school_near1|school_near2|school_near3'] = $education_id;
             }
 
             $country_list = array();
@@ -157,13 +179,13 @@ class ListController extends BaseController{
             $this->assign('schooltype_list', $schooltype_list);
         }
         else if('news' == $type) {
-            if (null != $keyword) {
+            if ('' != $keyword) {
                 $map['title'] = array ('like', "%{$keyword}%");
             }
-            if (null != $datefrom) {
+            if ('' != $datefrom) {
                 $map['date'] = array ('egt', $datefrom);
             }
-            if (null != $dateto) {
+            if ('' != $dateto) {
                 if (isset ($map['date'])) {
                     $map['date'] = array ('between', array($datefrom, $dateto));
                 }
@@ -173,13 +195,13 @@ class ListController extends BaseController{
             }
         }
         else if('ebuy' == $type) {
-            if (null != $keyword) {
+            if ('' != $keyword) {
                 $map['name'] = array ('like', "%{$keyword}%");
             }
-            if (null != $datefrom) {
+            if ('' != $datefrom) {
                 $map['date'] = array ('egt', $datefrom);
             }
-            if (null != $dateto) {
+            if ('' != $dateto) {
                 if (isset ($map['date'])) {
                     $map['date'] = array ('between', array($datefrom, $dateto));
                 }
@@ -189,13 +211,13 @@ class ListController extends BaseController{
             }
         }
         else if('testimonial' == $type) {
-            if (null != $keyword) {
+            if ('' != $keyword) {
                 $map['name'] = array ('like', "%{$keyword}%");
             }
-            if (null != $datefrom) {
+            if ('' != $datefrom) {
                 $map['date'] = array ('egt', $datefrom);
             }
-            if (null != $dateto) {
+            if ('' != $dateto) {
                 if (isset ($map['date'])) {
                     $map['date'] = array ('between', array($datefrom, $dateto));
                 }

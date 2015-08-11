@@ -11,46 +11,43 @@
 				    <li><a href="#">E-Buy Management</a> <span class="divider">/</span></li>
 				    <li class="active">E-Buy Management</li>
 				    </ul>
-				<h3><if condition="$list['id'] neq ''">Edit E-Buy<else/>Add E-Buy</if></h3>	
-                  <div class="frame-box-div">
-                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" enctype="multipart/form-data">
-				    <div class="control-group">
-				    <label class="control-label">E-Buy Name: </label>
-				    <div class="controls">
-				    <input type="text" id="name" name="name" value="{$list.name}" >
-				    </div>
-				    </div>
-				    <div class="control-group">
-				    <label class="control-label">Description: </label>
-				    <div class="controls">
-				    <textarea class="input-xxlarge" id="description" name="description" rows="5" cols="30" >{$list.description}</textarea>
-				    </div>
-				    </div>
-				    <div class="control-group">
-				    <label class="control-label">Date: </label>
-				    <div class="controls">
-				    <input type="text" id="date" name="date" value="{$list.date}" >
-				    </div>
-				    </div>
+
+                    <form id="myForm2" method="post" action="{:U('edit',array('type'=>$type))}">
+				    <button type="submit" class="btn btn-wide">Add E-Buy</button>
+				    </form>
+
+				<h3>E-Buy</h3>	
+                    <form class="form-inline" id="search-form" method="post" action="{:U('admin', array('type'=>'ebuy'))}">
+				    Name: &nbsp;&nbsp;<input class="input-small" type="text" id="keyword" name="keyword" value="{$keyword}" placeholder="Name"/>&nbsp;&nbsp;&nbsp;&nbsp;
+				    Date: &nbsp;&nbsp;<input class="input-small" type="text" id="datefrom" name="datefrom" value="{$datefrom}" placeholder="From"/>
+				    <input class="input-small" type="text" id="dateto" name="dateto" value="{$dateto}" placeholder="To"/>
 
 				    <input type="hidden" id="id" name="id" value="{$list.id}" />
                     <input type="hidden" id="type" name="type" value="{$type}" />
-				    <div class="control-group">
-				    <div class="controls">
-				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">Edit<else/>Add</if></button>
-				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">Cancel</button></if>
-				    </div>
-				    </div>
+
+				    <input type="hidden" id="order" name="o" value="{$order}" />
+				    <input type="hidden" id="sort" name="s" value="{$sort}" />
+				    <input type="hidden" id="page" name="p" value="{$page}" />
+				    <input type="submit" value="Search" />
 				    </form>
-                  </div><!--/frame-box-div-->
-<if condition="$list['id'] eq ''">
-				<h3>E-Buy</h3>	
                 <div class="frame-box-div">
                 <table class="table table-striped">
 	              <thead>
 	                <tr>
-	                    <th>Name</th>
-	                    <th>Date</th>
+	                    <th width="500">Name
+						  <?PHP if ('name'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('name');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th width="200">Date
+						  <?PHP if ('date'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('date');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
 	                    <th>Actions</th>
 	                </tr>
 	              </thead>
@@ -60,7 +57,7 @@
 	                    <td>{$vo.name}</td>
 	                    <td>{$vo.date}</td>
 	                    <td>
-	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
+	                    <a href="{:U('edit',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
                         <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">Delete</a></td>
 	                </tr>
 	                </volist>
@@ -73,7 +70,6 @@
 	             </ul>
 	            </div>
 	            </div><!--/frame-box-div-->
-</if>
         </div><!--/span-->
       </div><!--/row-->
 
@@ -104,8 +100,18 @@
   }
 
 $(function(){
-  $('#date').datepicker({
+  $('#datefrom,#dateto').datepicker({
     format: 'yyyy-mm-dd'
+  });
+  
+  // Change pagination href
+  $('.pagination li a').each(function(){
+    var href=$(this).attr('href');
+    if(typeof href == 'undefined') return;
+    var frags=href.split('=');
+    var page=frags[frags.length-1];
+    var newhref="javascript:(function(){$('#page').val("+page+");$('#search-form').attr('action',$('#search-form').attr('action')+'&p="+page+"').submit();})();"
+    $(this).attr('href', newhref);
   });
 });
 </script>

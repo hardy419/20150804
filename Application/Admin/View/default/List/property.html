@@ -17,15 +17,98 @@
 				    </form>
 
 				<h3>All Properties</h3>	
+                    <form class="form-inline" id="search-form" method="post" action="{:U('admin', array('type'=>'property'))}">
+				    <input class="input-small" type="text" id="keyword" name="keyword" value="{$keyword}" placeholder="Name"/>&nbsp;&nbsp;&nbsp;&nbsp;
+				    Date: &nbsp;&nbsp;<input class="input-small" type="text" id="datefrom" name="datefrom" value="{$datefrom}" placeholder="From"/>
+				    <input class="input-small" type="text" id="dateto" name="dateto" value="{$dateto}" placeholder="To"/>&nbsp;&nbsp;&nbsp;&nbsp;
+				    Location: &nbsp;&nbsp;
+                    <div class="input-append">
+				      <input class="input-small" id="input-suburb" type="text" name="suburb" value="{$suburb}" placeholder="Suburb">
+				      <input id="input-suburb-id" type="hidden" name="suburb-id" value="{$suburb_id}">
+                      <div class="btn-group">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="javascript:(function(){$('#input-suburb').val('');$('#input-suburb-id').val('');})();">( reset )</a></li>
+                        <volist name="suburb_list" id="vo">
+                          <li><a href="javascript:(function(){$('#input-suburb').val('<?PHP echo $vo['name']; ?>');$('#input-suburb-id').val('<?PHP echo $key; ?>');})();">{$vo.name}</a></li>
+                        </volist>
+                        </ul>
+                      </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="input-append">
+				      <input class="input-small" id="input-city" type="text" name="city" value="{$city}" placeholder="City">
+				      <input id="input-city-id" type="hidden" name="city-id" value="{$city_id}">
+                      <div class="btn-group">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="javascript:(function(){$('#input-city').val('');$('#input-city-id').val('');})();">( reset )</a></li>
+                        <volist name="city_list" id="vo">
+                          <li><a href="javascript:(function(){$('#input-city').val('<?PHP echo $vo['name']; ?>');$('#input-city-id').val('<?PHP echo $key; ?>');})();">{$vo.name}</a></li>
+                        </volist>
+                        </ul>
+                      </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="input-append">
+				      <input class="input-medium" id="input-education" type="text" name="education" value="{$education}" placeholder="Education">
+				      <input id="input-education-id" type="hidden" name="education-id" value="{$education_id}">
+                      <div class="btn-group">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="javascript:(function(){$('#input-education').val('');$('#input-education-id').val('');})();">( reset )</a></li>
+                        <volist name="school_list" id="vo">
+                          <li><a href="javascript:(function(){$('#input-education').val('<?PHP echo $vo['name']; ?>');$('#input-education-id').val('<?PHP echo $key; ?>');})();">{$vo.name}</a></li>
+                        </volist>
+                        </ul>
+                      </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
+
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+
+				    <input type="hidden" id="order" name="o" value="{$order}" />
+				    <input type="hidden" id="sort" name="s" value="{$sort}" />
+				    <input type="hidden" id="page" name="p" value="{$page}" />
+				    <input type="submit" value="Search" />
+				    </form>
 
                 <div class="frame-box-div">
                 <table class="table table-striped">
 	              <thead>
 	                <tr>
-	                    <th width="120">Name<!--a href="javascript:ajax_submit(null,'title','span-title')"><div class="inline-block"><span class="caret" id="span-title"></span></div></a--></th>
-	                    <th style="text-align:center">Status<!--a href="javascript:ajax_submit(null,'status','span-status')"><div class="inline-block"><span class="caret" id="span-status"></span></div></a--></th>
-	                    <th>Order</th>
-	                    <th>Addtime</th>
+	                    <th width="400">Name
+						  <?PHP if ('name'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('name');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th style="text-align:center" width="100">Status
+						  <?PHP if ('status'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('status');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th width="100">Order
+						  <?PHP if ('order'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('order');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th width="200">Addtime
+						  <?PHP if ('addtime'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('addtime');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
 	                    <th>Actions</th>
 	                </tr>
 	              </thead>
@@ -57,6 +140,7 @@
       <hr>
 
     </div>
+<link rel="stylesheet" type="text/css" href="__CSS__/datepicker.css">
 <script src="__JS__/jquery-1.8.2.min.js"></script>
 <script src="__JS__/jquery.form.js"></script>
 <script src="__JS__/CheckForm.js"></script>
@@ -80,8 +164,8 @@
   }
 
 $(function(){
-  $('#search-submit').click(function(){
-    ajax_submit(null,null);
+  $('#datefrom,#dateto').datepicker({
+    format: 'yyyy-mm-dd'
   });
 });
 </script>

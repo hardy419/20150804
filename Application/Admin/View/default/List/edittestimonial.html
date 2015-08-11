@@ -1,0 +1,148 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">Main</a> <span class="divider">/</span></li>
+				    <li><a href="#">News Management</a> <span class="divider">/</span></li>
+				    <li class="active">News Management</li>
+				    </ul>
+
+				<h3><if condition="$list['id'] neq ''">Edit Testimonial<else/>Add Testimonial</if></h3>	
+                  <div class="frame-box-div">
+                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" enctype="multipart/form-data">
+				    <div class="control-group">
+				    <label class="control-label">Testimonial Name: </label>
+				    <div class="controls">
+				    <input type="text" id="name" name="name" value="{$list.name}" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Description: </label>
+				    <div class="controls">
+				    <textarea class="input-xxlarge" id="description" name="description" rows="5" cols="30" >{$list.description}</textarea>
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Date: </label>
+				    <div class="controls">
+				    <input type="text" id="date" name="date" value="{$list.date}" >
+				    </div>
+				    </div>
+
+		<div class="control-group">
+		  <!--label class="control-label">Link£º</label-->
+		  <div class="controls">
+			<input type="hidden" id="image-url" name="photo" value="{$list.photo}" >
+			<span class="fileinput-image"><img class="uploaded-img main-banner-img" src="" /></span>
+		  </div>
+		</div>
+		<div class=" control-group">
+		  <label class="control-label">Photo: </label>
+		  <div class="controls fileinput-button">
+			<span class="fileinput-button"><span>Click to upload image</span><input id="fileupload" type="file" name="files" class="input" ></span>
+			<span class=" iconshadow" ><i class="icon-remove" onClick="tool.removeMovie('#time')"></i></span><span id="upload-progress" class="help-inline"></span>
+			<br/><span class="help-text"><span class="label label-important">( Maximum size: 50M )</span></span>
+		  </div>
+	   </div>
+
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">Edit<else/>Add</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">Cancel</button></if>
+				    </div>
+				    </div>
+				    </form>
+                  </div><!--/frame-box-div-->
+
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<link rel="stylesheet" type="text/css" href="__CSS__/datepicker.css">
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/jquery-ui.min.js"></script>
+<script src="__JS__/jquery.fileupload.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+function change_image(url){ 
+ jQuery(".uploaded-img").attr("src","{:SITE_PATH}"+url);
+ jQuery(".uploaded-img").css("width","160px");
+ jQuery(".uploaded-img").css("height","160px");
+ if(jQuery('.remove-a').length==0) {
+  jQuery('<a class="remove-a" href="{:U("delBanner",array("id"=>$list["id"]))}">Remove</a><br/>').insertAfter(".fileinput-image");
+ }
+}
+
+var tool={
+  uploadMovie:function(url,btn,input,msg){
+   jQuery(btn).fileupload({
+       url: url,
+       dataType: 'json',
+       done: function (e, data) {
+        jQuery.each(data.result.files, function (index, file) {
+         
+            if(file.error){
+             alert(file.error);
+            }else{
+               jQuery(input).val(file.name);
+               change_image(file.name);
+            }
+           });
+       },
+       progressall: function (e, data) {
+           var progress = parseInt(data.loaded / data.total * 100, 10);
+            $(msg).html('upload:'+progress + '%');
+       }
+   }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+  },
+  removeMovie:function(obj){
+   jQuery(obj).val("");
+  }
+};
+
+$(function(){
+  $('#date').datepicker({
+    format: 'yyyy-mm-dd'
+  });
+
+ var url='__URL__/uploadPic/model/banners';
+ tool.uploadMovie(url,"#fileupload",'#image-url',"#upload-progress");
+
+  if(jQuery('#image-url').val()!=''){
+    change_image(jQuery('#image-url').val());
+  }
+  jQuery('#image-url').change(function(){
+    change_image(jQuery('#image-url').val());
+  });
+});
+</script>
+</body>
+</html>
