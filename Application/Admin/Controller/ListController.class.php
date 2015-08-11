@@ -55,9 +55,36 @@ class ListController extends BaseController{
         $this->assign ('order', $order);
         $this->assign ('sort', $sort);
 
+        // Search
+        $keyword = I('request.keyword',null);
+        $datefrom = I('request.datefrom',null);
+        $dateto = I('request.dateto',null);
+        $this->assign ('keyword', $keyword);
+        $this->assign ('datefrom', $datefrom);
+        $this->assign ('dateto', $dateto);
+
+        // page
+        $page = I('request.page',1);
+        $this->assign ('page', $page);
+
         $map = array ();
         
         if('property' == $type) {
+            if (null != $keyword) {
+                $map['name'] = array ('like', "%{$keyword}%");
+            }
+            if (null != $datefrom) {
+                $map['addtime'] = array ('egt', $datefrom);
+            }
+            if (null != $dateto) {
+                if (isset ($map['addtime'])) {
+                    $map['addtime'] = array ('between', array($datefrom, $dateto));
+                }
+                else {
+                    $map['addtime'] = array ('elt', $dateto);
+                }
+            }
+
             $country_list = array();
             $city_list = array();
             $suburb_list = array();
@@ -129,6 +156,54 @@ class ListController extends BaseController{
             $this->assign('suburb_list', $suburb_list);
             $this->assign('schooltype_list', $schooltype_list);
         }
+        else if('news' == $type) {
+            if (null != $keyword) {
+                $map['title'] = array ('like', "%{$keyword}%");
+            }
+            if (null != $datefrom) {
+                $map['date'] = array ('egt', $datefrom);
+            }
+            if (null != $dateto) {
+                if (isset ($map['date'])) {
+                    $map['date'] = array ('between', array($datefrom, $dateto));
+                }
+                else {
+                    $map['date'] = array ('elt', $dateto);
+                }
+            }
+        }
+        else if('ebuy' == $type) {
+            if (null != $keyword) {
+                $map['name'] = array ('like', "%{$keyword}%");
+            }
+            if (null != $datefrom) {
+                $map['date'] = array ('egt', $datefrom);
+            }
+            if (null != $dateto) {
+                if (isset ($map['date'])) {
+                    $map['date'] = array ('between', array($datefrom, $dateto));
+                }
+                else {
+                    $map['date'] = array ('elt', $dateto);
+                }
+            }
+        }
+        else if('testimonial' == $type) {
+            if (null != $keyword) {
+                $map['name'] = array ('like', "%{$keyword}%");
+            }
+            if (null != $datefrom) {
+                $map['date'] = array ('egt', $datefrom);
+            }
+            if (null != $dateto) {
+                if (isset ($map['date'])) {
+                    $map['date'] = array ('between', array($datefrom, $dateto));
+                }
+                else {
+                    $map['date'] = array ('elt', $dateto);
+                }
+            }
+        }
 
         if (null !== $id) {
             $this->_edit ($tname, $id);
@@ -187,7 +262,7 @@ class ListController extends BaseController{
         $pid=I('get.pid',0);
         $this->assign('pid',$pid);
         $type=I('get.type');
-        if(!in_array($type,array('property')))$this->error('',U('Index/index'));
+        if(!in_array($type,array('property','user','page','property','schooltype','education','news','country','city','suburb','ebuy','testimonial')))$this->error('',U('Index/index'));
 
         if('property' == $type) {
             $country_list = array();

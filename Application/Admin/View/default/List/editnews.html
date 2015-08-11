@@ -1,0 +1,149 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">Main</a> <span class="divider">/</span></li>
+				    <li><a href="#">News Management</a> <span class="divider">/</span></li>
+				    <li class="active">News Management</li>
+				    </ul>
+
+				<h3><if condition="$list['id'] neq ''">Edit News<else/>Add News</if></h3>	
+                  <div class="frame-box-div">
+                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" enctype="multipart/form-data">
+				    <div class="control-group">
+				    <label class="control-label">Title: </label>
+				    <div class="controls">
+				    <input type="text" id="title" name="title" value="{$list.title}" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Description: </label>
+				    <div class="controls">
+				    <textarea class="input-xxlarge" id="description" name="description" rows="5" cols="30" >{$list.description}</textarea>
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Link: </label>
+				    <div class="controls">
+				    <input type="text" id="link" name="link" value="{$list.link}" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">PDF: </label>
+				    <div class="controls">
+				    <input type="text" id="pdf" name="pdf" value="{$list.pdf}" >
+				    </div>
+				    </div>
+				    <div class=" control-group">
+		                <label class="control-label">&nbsp;</label>
+		                   <div class="controls fileinput-button">
+		                     <span class="fileinput-button"><span>Click to upload PDF</span><input id="fileupload" type="file" name="files" class="input" ></span>
+		                     <span class=" iconshadow" ><i class="icon-remove" onClick="tool.removeMovie('#time')"></i></span><span id="upload-progress" class="help-inline"></span>
+		                     <br/><span class="help-text"><span class="label label-important">( Maximum size: 50M )</span></span>
+		                </div>
+		            </div>
+				    <div class="control-group">
+				    <label class="control-label">Date: </label>
+				    <div class="controls">
+				    <input type="text" id="date" name="date" value="{$list.date}" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Order: </label>
+				    <div class="controls">
+				    <input class="input-small" type="text" id="order" name="order" value="{$list.order}" >
+				    </div>
+				    </div>
+				    <div class="control-group">
+				    <label class="control-label">Visible: </label>
+				    <div class="controls">
+				    <input type="checkbox" id="status" name="status" <if condition="$list['status'] eq '1'">checked</if>>
+				    </div>
+				    </div>
+
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+				    <div class="control-group">
+				    <div class="controls">
+				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">Edit<else/>Add</if></button>
+				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">Cancel</button></if>
+				    </div>
+				    </div>
+				    </form>
+                  </div><!--/frame-box-div-->
+
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<link rel="stylesheet" type="text/css" href="__CSS__/datepicker.css">
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/jquery-ui.min.js"></script>
+<script src="__JS__/jquery.fileupload.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+var tool={
+		uploadMovie:function(url,btn,input,msg,idx){
+			jQuery(btn).fileupload({
+			    url: url,
+			    dataType: 'json',
+			    done: function (e, data) {
+			    	jQuery.each(data.result.files, function (index, file) {
+			    		
+			        	if(file.error){
+			        		alert(file.error);
+			        	}else{
+			        	   jQuery(input).val(file.name);
+			        	   change_image(file.name,idx);
+			        	}
+			        });
+			    },
+			    progressall: function (e, data) {
+			        var progress = parseInt(data.loaded / data.total * 100, 10);
+			         $(msg).html('upload:'+progress + '%');
+			    }
+			}).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+		},
+		removeMovie:function(obj){
+			jQuery(obj).val("");
+		}
+};	
+
+$(function(){
+  $('#date').datepicker({
+    format: 'yyyy-mm-dd'
+  });
+
+	var url='__URL__/uploadPdf';
+	//var url='__URL__/uploadPic/model/ads';
+	tool.uploadMovie(url,"#fileupload",'#pdf',"#upload-progress",1);
+});
+</script>
+</body>
+</html>

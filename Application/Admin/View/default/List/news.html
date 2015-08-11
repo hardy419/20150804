@@ -11,78 +11,43 @@
 				    <li><a href="#">News Management</a> <span class="divider">/</span></li>
 				    <li class="active">News</li>
 				    </ul>
-				<h3><if condition="$list['id'] neq ''">Edit News<else/>Add News</if></h3>	
-                  <div class="frame-box-div">
-                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" enctype="multipart/form-data">
-				    <div class="control-group">
-				    <label class="control-label">Title: </label>
-				    <div class="controls">
-				    <input type="text" id="title" name="title" value="{$list.title}" >
-				    </div>
-				    </div>
-				    <div class="control-group">
-				    <label class="control-label">Description: </label>
-				    <div class="controls">
-				    <textarea class="input-xxlarge" id="description" name="description" rows="5" cols="30" >{$list.description}</textarea>
-				    </div>
-				    </div>
-				    <div class="control-group">
-				    <label class="control-label">Link: </label>
-				    <div class="controls">
-				    <input type="text" id="link" name="link" value="{$list.link}" >
-				    </div>
-				    </div>
-				    <div class="control-group">
-				    <label class="control-label">PDF: </label>
-				    <div class="controls">
-				    <input type="text" id="pdf" name="pdf" value="{$list.pdf}" >
-				    </div>
-				    </div>
-				    <div class=" control-group">
-		                <label class="control-label">&nbsp;</label>
-		                   <div class="controls fileinput-button">
-		                     <span class="fileinput-button"><span>Click to upload PDF</span><input id="fileupload" type="file" name="files" class="input" ></span>
-		                     <span class=" iconshadow" ><i class="icon-remove" onClick="tool.removeMovie('#time')"></i></span><span id="upload-progress" class="help-inline"></span>
-		                     <br/><span class="help-text"><span class="label label-important">( Maximum size: 50M )</span></span>
-		                </div>
-		            </div>
-				    <div class="control-group">
-				    <label class="control-label">Date: </label>
-				    <div class="controls">
-				    <input type="text" id="date" name="date" value="{$list.date}" >
-				    </div>
-				    </div>
-				    <div class="control-group">
-				    <label class="control-label">Order: </label>
-				    <div class="controls">
-				    <input class="input-small" type="text" id="order" name="order" value="{$list.order}" >
-				    </div>
-				    </div>
-				    <div class="control-group">
-				    <label class="control-label">Visible: </label>
-				    <div class="controls">
-				    <input type="checkbox" id="status" name="status" <if condition="$list['status'] eq '1'">checked</if>>
-				    </div>
-				    </div>
+
+                    <form id="myForm2" method="post" action="{:U('edit',array('type'=>$type))}">
+				    <button type="submit" class="btn btn-wide">Add News</button>
+				    </form>
+
+				<h3>News</h3>	
+                    <form class="form-inline" id="search-form" method="post" action="{:U('admin', array('type'=>'news'))}">
+				    Title: &nbsp;&nbsp;<input class="input-small" type="text" id="keyword" name="keyword" value="{$keyword}" placeholder="Title"/>&nbsp;&nbsp;&nbsp;&nbsp;
+				    Date: &nbsp;&nbsp;<input class="input-small" type="text" id="datefrom" name="datefrom" value="{$datefrom}" placeholder="From"/>
+				    <input class="input-small" type="text" id="dateto" name="dateto" value="{$dateto}" placeholder="To"/>
 
 				    <input type="hidden" id="id" name="id" value="{$list.id}" />
                     <input type="hidden" id="type" name="type" value="{$type}" />
-				    <div class="control-group">
-				    <div class="controls">
-				    <button type="submit" class="btn"><if condition="$list['id'] neq ''">Edit<else/>Add</if></button>
-				    <if condition="$list['id'] neq ''"><button type="button" class="btn" onclick="window.location.href='{:U('admin',array('type'=>$type,'pid'=>$pid))}';">Cancel</button></if>
-				    </div>
-				    </div>
+
+				    <input type="hidden" id="order" name="o" value="{$order}" />
+				    <input type="hidden" id="sort" name="s" value="{$sort}" />
+				    <input type="hidden" id="page" name="p" value="{$page}" />
+				    <input type="submit" value="Search" />
 				    </form>
-                  </div><!--/frame-box-div-->
-<if condition="$list['id'] eq ''">
-				<h3>News</h3>	
                 <div class="frame-box-div">
                 <table class="table table-striped">
 	              <thead>
 	                <tr>
-	                    <th>Title</th>
-	                    <th>Date</th>
+	                    <th width="500">Title
+						  <?PHP if ('title'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('title');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th width="200">Date
+						  <?PHP if ('date'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('date');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
 	                    <th>Visible</th>
 	                    <th>Actions</th>
 	                </tr>
@@ -94,7 +59,7 @@
 	                    <td>{$vo.date}</td>
 	                    <td><if condition="$vo['status'] eq '1'"><img style="position:relative;left:4px" src="{:SITE_PATH}Public/Img/Buy/active.png" /></if></td>
 	                    <td>
-	                    <a href="{:U('admin',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
+	                    <a href="{:U('edit',array('id'=>$vo['id'],'type'=>$type,'pid'=>$pid))}">Edit</a>&nbsp;｜&nbsp;
                         <a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">Delete</a></td>
 	                </tr>
 	                </volist>
@@ -107,7 +72,6 @@
 	             </ul>
 	            </div>
 	            </div><!--/frame-box-div-->
-</if>
         </div><!--/span-->
       </div><!--/row-->
 
@@ -118,8 +82,6 @@
 <script src="__JS__/jquery-1.8.2.min.js"></script>
 <script src="__JS__/jquery.form.js"></script>
 <script src="__JS__/CheckForm.js"></script>
-<script src="__JS__/jquery-ui.min.js"></script>
-<script src="__JS__/jquery.fileupload.js"></script>
 <script src="__JS__/bootstrap-datepicker.js"></script>
 <script src="__JS__/common.js"></script>
 <script>
@@ -139,41 +101,20 @@
 	  }
   }
 
-var tool={
-		uploadMovie:function(url,btn,input,msg,idx){
-			jQuery(btn).fileupload({
-			    url: url,
-			    dataType: 'json',
-			    done: function (e, data) {
-			    	jQuery.each(data.result.files, function (index, file) {
-			    		
-			        	if(file.error){
-			        		alert(file.error);
-			        	}else{
-			        	   jQuery(input).val(file.name);
-			        	   change_image(file.name,idx);
-			        	}
-			        });
-			    },
-			    progressall: function (e, data) {
-			        var progress = parseInt(data.loaded / data.total * 100, 10);
-			         $(msg).html('upload:'+progress + '%');
-			    }
-			}).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
-		},
-		removeMovie:function(obj){
-			jQuery(obj).val("");
-		}
-};	
-
 $(function(){
-  $('#date').datepicker({
+  $('#datefrom,#dateto').datepicker({
     format: 'yyyy-mm-dd'
   });
-
-	var url='__URL__/uploadPdf';
-	//var url='__URL__/uploadPic/model/ads';
-	tool.uploadMovie(url,"#fileupload",'#pdf',"#upload-progress",1);
+  
+  // Change pagination href
+  $('.pagination li a').each(function(){
+    var href=$(this).attr('href');
+    if(typeof href == 'undefined') return;
+    var frags=href.split('=');
+    var page=frags[frags.length-1];
+    var newhref="javascript:(function(){$('#page').val("+page+");$('#search-form').attr('action',$('#search-form').attr('action')+'&p="+page+"').submit();})();"
+    $(this).attr('href', newhref);
+  });
 });
 </script>
 </body>
