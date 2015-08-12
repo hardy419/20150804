@@ -1,0 +1,129 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">Main</a> <span class="divider">/</span></li>
+				    <li><a href="#">Enquiry Management</a> <span class="divider">/</span></li>
+				    <li class="active">Enquiry Management</li>
+				    </ul>
+
+				<h3>Enquiries</h3>	
+                    <form class="form-inline" id="search-form" method="post" action="{:U('List/admin', array('type'=>'member_enquiry_header'))}">
+<!--
+				    Name: &nbsp;&nbsp;<input class="input-small" type="text" id="keyword" name="keyword" value="{$keyword}" placeholder="Name"/>&nbsp;&nbsp;&nbsp;&nbsp;
+				    Date: &nbsp;&nbsp;<input class="input-small" type="text" id="datefrom" name="datefrom" value="{$datefrom}" placeholder="From"/>
+				    <input class="input-small" type="text" id="dateto" name="dateto" value="{$dateto}" placeholder="To"/>
+				    <input type="submit" value="Search" />
+-->
+				    <input type="hidden" id="id" name="id" value="{$list.id}" />
+                    <input type="hidden" id="type" name="type" value="{$type}" />
+
+				    <input type="hidden" id="order" name="o" value="{$order}" />
+				    <input type="hidden" id="sort" name="s" value="{$sort}" />
+				    <input type="hidden" id="page" name="p" value="{$page}" />
+				    </form>
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                    <th width="200">Name
+						  <?PHP if ('name'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('name');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th width="300">Email
+						  <?PHP if ('email'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('email');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th width="200">Enquiry Type
+						  <?PHP if ('enquiry_type'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('enquiry_type');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th width="150">Confirmed
+						  <?PHP if ('confirmed'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('confirmed');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                    <th>Actions</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td>{$vo.name}</td>
+	                    <td>{$vo.email}</td>
+	                    <td>{$vo.enquiry_type}</td>
+	                    <td><if condition="$vo['confirmed'] eq '1'"><img style="position:relative;left:16px" src="{:SITE_PATH}Public/Img/Buy/active.png" /></if></td>
+	                    <td>
+	                    <a href="{:U('List/admin',array('pid'=>$vo['id'],'type'=>'member_enquiry_details'))}">View Details</a>&nbsp;｜&nbsp;
+	                    <a href="{:U('Index/confirmEmail',array('id'=>$vo['id'],'name'=>$vo['name'],'email'=>$vo['email']))}">Send Email</a>
+                        <!--a href="javascript:void(0);" onclick="del('{:U('del',array('id'=>$vo['id'],'type'=>$type))}');">Delete</a--></td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+
+            <div style="color:#f00">{$error}</div>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+$(function(){
+  // Change pagination href
+  $('.pagination li a').each(function(){
+    var href=$(this).attr('href');
+    if(typeof href == 'undefined') return;
+    var frags=href.split('=');
+    var page=frags[frags.length-1];
+    var newhref="javascript:(function(){$('#page').val("+page+");$('#search-form').attr('action',$('#search-form').attr('action')+'&p="+page+"').submit();})();"
+    $(this).attr('href', newhref);
+  });
+});
+</script>
+</body>
+</html>

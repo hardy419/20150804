@@ -1,0 +1,113 @@
+<include file="Common:header" />
+<body>
+<div class="container" style="width:1480px;">
+      <div class="row">
+        <div class="span3">
+         <include file="Common:menu" />
+        </div><!--/span-->
+        <div class="span9">
+                     <ul class="breadcrumb">
+				    <li><a href="#">Main</a> <span class="divider">/</span></li>
+				    <li><a href="#">Enquiry Management</a> <span class="divider">/</span></li>
+				    <li class="active">Enquiry Details</li>
+				    </ul>
+
+                  <div class="frame-box-div">
+                    <form class="form-horizontal" id="myForm" method="post" action="{:U('save')}" enctype="multipart/form-data">
+
+				    <div class="control-group">
+				    <label class="control-label">Name: </label>
+				    <div class="control-label">
+				    {$listi.name}
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Email: </label>
+				    <div class="control-label">
+				    {$listi.email}
+				    </div>
+				    </div>
+
+				    <div class="control-group">
+				    <label class="control-label">Enquiry Type: </label>
+				    <div class="control-label">
+				    {$listi.enquiry_type}
+				    </div>
+				    </div>
+
+				    </form>
+                  </div><!--/frame-box-div-->
+
+				<h3>Enquiry Properties</h3>	
+                <div class="frame-box-div">
+                <table class="table table-striped">
+	              <thead>
+	                <tr>
+	                    <th width="500">Property
+						  <?PHP if ('property'==$order && 'ASC'==$sort) { ?>
+						  <a href="javascript:(function(){$('#sort').val('DESC');$('#search-form').submit();})();"><div class="inline-block"><span class="caretv"></span></div></a>
+						  <?PHP } else { ?>
+						  <a href="javascript:(function(){$('#order').val('property');$('#sort').val('ASC');$('#search-form').submit();})();"><div class="inline-block"><span class="caret"></span></div></a>
+						  <?PHP } ?>
+                        </th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	               <volist name="list" id="vo">
+	                <tr <if condition="$current eq $vo['id']">class="warning"</if>>
+	                    <td>{$vo.property}</td>
+	                </tr>
+	                </volist>
+	              </tbody>
+	            </table>
+
+	            <div class="pagination pagination-right">
+	              <ul>
+	                {$show}
+	             </ul>
+	            </div>
+	            </div><!--/frame-box-div-->
+
+            <div style="color:#f00">{$error}</div>
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+    </div>
+<script src="__JS__/jquery-1.8.2.min.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/CheckForm.js"></script>
+<script src="__JS__/common.js"></script>
+<script>
+  function del(url){
+	  if(url=='') return false;
+      if(window.confirm('Are you sure to delete this record?')){	  
+		  $.get(url,function(responseText){
+			    var info=responseText['info'];
+		        var status=responseText['status'];
+		        var url=responseText['url'];
+		        if(status==1){
+		        alert(info)
+		        window.location.href=url;
+		        } else alert(info);
+		  });
+		  return true;
+	  }
+  }
+
+$(function(){
+  // Change pagination href
+  $('.pagination li a').each(function(){
+    var href=$(this).attr('href');
+    if(typeof href == 'undefined') return;
+    var frags=href.split('=');
+    var page=frags[frags.length-1];
+    var newhref="javascript:(function(){$('#page').val("+page+");$('#search-form').attr('action',$('#search-form').attr('action')+'&p="+page+"').submit();})();"
+    $(this).attr('href', newhref);
+  });
+});
+</script>
+</body>
+</html>

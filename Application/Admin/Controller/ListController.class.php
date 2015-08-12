@@ -37,12 +37,12 @@ class ListController extends BaseController{
         }
     }
 
-    public function admin() {
-        $type=I('get.type', 'user');
+    public function admin($type) {
+        $type=I('get.type', $type);
         $pid=I('get.pid', null);
         $id=I('get.id', null);
-        if(!in_array($type,array('user','page','property','schooltype','education','news','country','city','suburb','ebuy','testimonial'))) $this->error('',U('Index/index'));
-        if ('user' == $type) {
+        if(!in_array($type,array('user','page','property','schooltype','education','news','country','city','suburb','ebuy','testimonial','member_enquiry_header','member_enquiry_details'))) $this->error('',U('Index/index'));
+        if ('user' == $type || 'member_enquiry_header' == $type || 'member_enquiry_details' == $type) {
             $tname=$type;
         }
         else {
@@ -226,6 +226,17 @@ class ListController extends BaseController{
                 }
             }
         }
+        else if('member_enquiry_header' == $type) {
+            if ('' != $keyword) {
+                $map['name|email|enquiry_type'] = array ('like', "%{$keyword}%");
+            }
+        }
+        else if('member_enquiry_details' == $type) {
+            $map['header_id'] = $pid;
+            $db_header = M('member_enquiry_header');
+            $list = $db_header->find($pid);
+            $this->assign ('listi', $list);
+        }
 
         if (null !== $id) {
             $this->_edit ($tname, $id);
@@ -239,6 +250,8 @@ class ListController extends BaseController{
         }
         $this->assign('type',$type);
 
+        //$this->assign('dbg', M()->getLastSql());
+
         $current=cookie('current');
         cookie('current',null);
         $this->assign('current',$current);
@@ -247,7 +260,7 @@ class ListController extends BaseController{
             $this->display();
         }
         else {
-            $this->display($type);
+            $this->display('List/'.$type);
         }
     }
 
@@ -573,6 +586,16 @@ class ListController extends BaseController{
                 $query .= " ORDER BY `{$order}` {$sort} LIMIT {$p->firstRow},{$p->listRows}";
                 $list=$model->query($query);
             }
+
+            // Special assignments
+            if (false !== strpos ($tname, 'member_enquiry_details')) {
+                $db_property = M('property_'.$this->lang);
+                foreach ($list as &$row) {
+                    $property_info = $db_property->find($row['property_id']);
+                    $row['property'] = $property_info['name'];
+                }
+            }
+
             $show=$p->show();
             $this->assign("show",$show);
             $this->assign('list',$list);

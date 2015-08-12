@@ -219,6 +219,38 @@ CREATE TABLE IF NOT EXISTS `ml_testimonial_en` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `ml_member_enquiry_details`
+--
+
+CREATE TABLE IF NOT EXISTS `ml_member_enquiry_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `header_id` int(11) NOT NULL,
+  `property_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `header_id` (`header_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `ml_member_enquiry_header`
+--
+
+CREATE TABLE IF NOT EXISTS `ml_member_enquiry_header` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `enquiry_type` varchar(32) NOT NULL,
+  `confirmed` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `email` (`email`),
+  KEY `enquiry_type` (`enquiry_type`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `ml_user`
 --
 
